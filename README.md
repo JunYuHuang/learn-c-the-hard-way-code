@@ -9,7 +9,8 @@ Repository of my solutions for the coding execises in the book `Learn C The Hard
 - [x] Exercise 2: Using Makefiles to Build
 - [x] Exercise 3: Formatted Printing
 - [x] Exercise 4: Using a Debugger
-- [ ] Exercise 5: Memorizing C Operators
+- [x] Exercise 5: Memorizing C Operators
+- [x] Exercise 6: Memorizing C Syntax
 
 ## Misc
 
