@@ -2,7 +2,9 @@
 
 ## Notes
 
-- TODO
+- not initializing a declared int variable in C
+  - most compilers set a default value of 0 but this is not reliable
+- always initialise variables
 
 ## Extra Credit
 
