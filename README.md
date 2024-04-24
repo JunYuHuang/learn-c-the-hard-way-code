@@ -13,7 +13,7 @@ Repository of my solutions for the coding execises in the book `Learn C The Hard
 - [x] Exercise 6: Memorizing C Syntax
 - [x] Exercise 7: Variables and Types
 - [x] Exercise 8: If, Else-If, Else
-- [ ] Exercise 9: While-Loop and Boolean Expressions
+- [x] Exercise 9: While-Loop and Boolean Expressions
 - [ ] Exericse 10: Switch Statements
 - [ ] Exercise 11: Arrays and Strings
 - [ ] Exercise 12: Sizes and Arrays
