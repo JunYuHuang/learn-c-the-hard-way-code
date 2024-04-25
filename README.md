@@ -22,7 +22,7 @@ An exercise is complete when:
 - [x] Exercise 10: Switch Statements
 - [x] Exercise 11: Arrays and Strings
 - [x] Exercise 12: Sizes and Arrays
-- [ ] Exercise 13: For-Loops and Arrays of Strings
+- [x] Exercise 13: For-Loops and Arrays of Strings
 - [ ] Exercise 14: Writing and Using Functions
 - [ ] Exercise 15: Pointers, Dreaded Pointers
 - [ ] Exercise 16: Structs And Pointers To Them
