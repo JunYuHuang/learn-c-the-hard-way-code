@@ -23,7 +23,7 @@ An exercise is complete when:
 - [x] Exercise 11: Arrays and Strings
 - [x] Exercise 12: Sizes and Arrays
 - [x] Exercise 13: For-Loops and Arrays of Strings
-- [ ] Exercise 14: Writing and Using Functions
+- [x] Exercise 14: Writing and Using Functions
 - [ ] Exercise 15: Pointers, Dreaded Pointers
 - [ ] Exercise 16: Structs And Pointers To Them
 - [ ] Exercise 17: Heap and Stack Memory Allocation
