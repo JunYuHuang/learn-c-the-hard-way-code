@@ -20,7 +20,7 @@ An exercise is complete when:
 - [x] Exercise 8: If, Else-If, Else
 - [x] Exercise 9: While-Loop and Boolean Expressions
 - [x] Exercise 10: Switch Statements
-- [ ] Exercise 11: Arrays and Strings
+- [x] Exercise 11: Arrays and Strings
 - [ ] Exercise 12: Sizes and Arrays
 - [ ] Exercise 13: For-Loops and Arrays of Strings
 - [ ] Exercise 14: Writing and Using Functions
