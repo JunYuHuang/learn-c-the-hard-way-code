@@ -4,23 +4,26 @@
 
 // forward declarations
 int can_print_it(char ch);
-void print_letters(char arg[]);
+void print_letters(char arg[], int ch_len);
 
 void print_arguments(int argc, char *argv[])
 {
     int i = 0;
 
+    // Extra Credit:
+    // - Get the size of `argv[i]` with `strlen()`
+    // - Pass this size to `print_letters()`
+    // - Rewrite `print_letters()` to use this size to print
     for (i = 0; i < argc; i++) {
-        print_letters(argv[i]);
+        print_letters(argv[i], strlen(argv[i]));
     }
 }
 
-void print_letters(char arg[])
+void print_letters(char arg[], int ch_len)
 {
     int i = 0;
-    int arg_size = strlen(arg);
 
-    for (i = 0; i < arg_size; i++) {
+    for (i = 0; i < ch_len; i++) {
         char ch = arg[i];
 
         if (can_print_it(ch)) {
