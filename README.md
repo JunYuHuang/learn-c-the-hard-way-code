@@ -25,7 +25,7 @@ An exercise is complete when:
 - [x] Exercise 13: For-Loops and Arrays of Strings
 - [x] Exercise 14: Writing and Using Functions
 - [x] Exercise 15: Pointers, Dreaded Pointers
-- [ ] Exercise 16: Structs And Pointers To Them
+- [x] Exercise 16: Structs And Pointers To Them
 - [ ] Exercise 17: Heap and Stack Memory Allocation
 - [ ] Exercise 18: Pointers to Functions
 - [ ] Exercise 19: Zed's Awesome Debug Macros
