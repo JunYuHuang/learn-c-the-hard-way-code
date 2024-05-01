@@ -88,16 +88,48 @@
 
 - [x] 1. The `die` function needs to be augmented to let you pass the `conn` variable, so it can close it and clean up.
   - See `ec1.c`
-- [ ] 2. Change the code to accept parameters for `MAX_DATA` and `MAX_ROWS`, store them in the `Database` struct, and write that to the file, thus creating a database that can be arbitrarily sized.
-  - See `ec2.c`
-- [ ] 3. Add more operations you can do with the database, like `find`.
-  - TODO
-- [ ] 4. Read about how C does it's struct packing, and then try to see why your file is the size it is. See if you can calculate a new size after adding more fields.
-  - TODO
-- [ ] 5. Add some more fields to `Address` and make them searchable.
-  - TODO
-- [ ] 6. Write a shell script that will do your testing automatically for you by running commands in the right order. Hint: Use `set -e` at the top of a `bash` to make it abort the whole script if any command has an error.
-  - TODO
+- [ ] ~~2. Change the code to accept parameters for `MAX_DATA` and `MAX_ROWS`, store them in the `Database` struct, and write that to the file, thus creating a database that can be arbitrarily sized.~~
+  - Dropped
+  - See `ec2.c` (WIP)
+  - TODOs:
+    - update:
+      - `Database` struct
+      - `Database_open()` function
+      - `Database_create()` function
+      - `Database_write()` function?
+      - `main()` function to accept `MAX_DATA` and `MAX_ROWS` params from the user
+    - rework all functions that touch `Database` and `Connection`
+      - b/c converted char arrays `name` and `email` fields in `Database` struct to char pointers to support user-defined max size parameters
+      - need to allocate and free memory chunks for `name` and `email` char pointers
+    - make `MAX_DATA` and `MAX_ROWS` non-constant global variables
+- [x] 3. Add more operations you can do with the database, like `find`.
+  - See `ec3.c`
+  - TODOs
+    - add `Database_find()` function
+    - update `main()` to accept this find syntax:
+      - `ec3 <dbfile> f <field> <value>`
+- [ ] ~~4. Read about how C does it's struct packing, and then try to see why your file is the size it is. See if you can calculate a new size after adding more fields.~~
+  - Dropped
+  - See `ec4.c`
+  - struct packing: how the compiler sets memory for structs to save space / memory
+    - lowers speed (more CPU read cycles)
+    - reverse of struct padding
+    - force on compiler with `#pragma pack(1)` directive
+  - struct padding: how the compiler sets memory for structs for speed
+    - ups speed (less CPU read cycles)
+    - via more "wasted" padding space for its fields
+  - CPU arch sets how many bytes it can read in a cycle
+    - e.g. 32-bit CPU can read 4 bytes in a cycle
+      - b/c 8 bits = 1 byte --> 32 bits = 4 bytes
+  - compiler will pad struct fields for speed by default
+    - i.e. adds empty space between fields to reduce CPU read cycles
+  - to save space needed for a struct without struct packing,
+    - order its fields to reduce padding needed for all its fields?
+    - behavior depends on compiler and is not guaranteed??
+- [ ] ~~5. Add some more fields to `Address` and make them searchable.~~
+  - Skipped
+- [x] 6. Write a shell script that will do your testing automatically for you by running commands in the right order. Hint: Use `set -e` at the top of a `bash` to make it abort the whole script if any command has an error.
+  - See `ec6.c` and `test_ec6.sh`
 - [ ] 7. ~~Try reworking the program to use a single global for the database connection. How does this new version of the program compare to the other one?~~
   - Skipped
 - [ ] 8. ~~Go research stack data structure and write one in your favorite language, then try to do it in C.~~

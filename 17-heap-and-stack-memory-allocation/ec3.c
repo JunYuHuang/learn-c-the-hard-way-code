@@ -1,36 +1,23 @@
-// Extra Credit 2:
-// - allow user-defined sized Database sizes
+// Extra Credit 3:
+// - add a `find` database operation
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 
-// #define MAX_DATA 512
-// #define MAX_ROWS 100
-int MAX_DATA = 512;
-int MAX_ROWS = 100;
-
-// boolean function that returns 0 (false) or 1 (true)
-int is_ok_param_size(int param_size)
-{
-    return (param_size <= 0) ? 0 : 1;
-}
+#define MAX_DATA 512
+#define MAX_ROWS 100
 
 struct Address {
     int id;
     int set;
-    // char name[MAX_DATA];
-    // char email[MAX_DATA];
-    char *name;
-    char *email;
+    char name[MAX_DATA];
+    char email[MAX_DATA];
 };
 
 struct Database {
-    int MAX_DATA;
-    int MAX_ROWS;
-    // struct Address rows[MAX_ROWS];
-    struct Address *rows;
+    struct Address rows[MAX_ROWS];
 };
 
 struct Connection {
@@ -187,10 +174,40 @@ void Database_list(struct Connection *conn)
     }
 }
 
+void Database_find(struct Connection *conn, char *field, char *value)
+{
+    struct Database *db = conn->db;
+
+    // booleans
+    int is_id = (strcmp(field, "id") == 0) ? 1 : 0;
+    int is_name = (strcmp(field, "name") == 0) ? 1 : 0;
+    int is_email = (strcmp(field, "email") == 0) ? 1 : 0;
+
+    // return if `field` is invalid
+    if (!is_id && !is_name && !is_email)
+        die("Cannot find field");
+
+    int i = 0;
+    for (i = 0; i < MAX_ROWS; i++) {
+        struct Address *cur = &db->rows[i];
+
+        // skip unset rows
+        if (!cur->set) continue;
+
+        // print out matching rows
+        if (is_id && cur->id == atoi(value))
+            Address_print(cur);
+        else if (is_name && strcmp(cur->name, value) == 0)
+            Address_print(cur);
+        else if (is_email && strcmp(cur->email, value) == 0)
+            Address_print(cur);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     if (argc < 3)
-        die("USAGE: ec2 <dbfile> <action> [action params]");
+        die("USAGE: ec3 <dbfile> <action> [action params]");
 
     char *filename = argv[1];
     char action = argv[2][0];
@@ -202,17 +219,6 @@ int main(int argc, char *argv[])
 
     switch (action) {
         case 'c':
-            if (argc != 5)
-                die("USAGE: ec2 <dbfile> c <max_data> <max_rows>");
-
-            int max_data = atoi(argv[3]);
-            if (is_ok_param_size(max_data))
-                conn->db->MAX_DATA = max_data;
-
-            int max_rows = atoi(argv[4]);
-            if (is_ok_param_size(max_rows))
-                conn->db->MAX_ROWS = max_rows;
-
             Database_create(conn);
             Database_write(conn);
             break;
@@ -242,6 +248,12 @@ int main(int argc, char *argv[])
 
         case 'l':
             Database_list(conn);
+            break;
+
+        case 'f':
+            if (argc != 5)
+                die("USAGE: ec3 <dbfile> f <field> <value>");
+            Database_find(conn, argv[3], argv[4]);
             break;
 
         default:

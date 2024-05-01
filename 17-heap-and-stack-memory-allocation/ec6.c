@@ -1,36 +1,21 @@
-// Extra Credit 2:
-// - allow user-defined sized Database sizes
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 
-// #define MAX_DATA 512
-// #define MAX_ROWS 100
-int MAX_DATA = 512;
-int MAX_ROWS = 100;
-
-// boolean function that returns 0 (false) or 1 (true)
-int is_ok_param_size(int param_size)
-{
-    return (param_size <= 0) ? 0 : 1;
-}
+#define MAX_DATA 512
+#define MAX_ROWS 100
 
 struct Address {
     int id;
     int set;
-    // char name[MAX_DATA];
-    // char email[MAX_DATA];
-    char *name;
-    char *email;
+    char name[MAX_DATA];
+    char email[MAX_DATA];
 };
 
 struct Database {
-    int MAX_DATA;
-    int MAX_ROWS;
-    // struct Address rows[MAX_ROWS];
-    struct Address *rows;
+    struct Address rows[MAX_ROWS];
 };
 
 struct Connection {
@@ -151,7 +136,6 @@ void Database_set(
 
     res = strncpy(addr->email, email, MAX_DATA);
     addr->email[strlen(email)] = '\0';
-
     if (!res)
         die("Email copy failed");
 }
@@ -190,7 +174,7 @@ void Database_list(struct Connection *conn)
 int main(int argc, char *argv[])
 {
     if (argc < 3)
-        die("USAGE: ec2 <dbfile> <action> [action params]");
+        die("USAGE: ex17 <dbfile> <action> [action params]");
 
     char *filename = argv[1];
     char action = argv[2][0];
@@ -202,17 +186,6 @@ int main(int argc, char *argv[])
 
     switch (action) {
         case 'c':
-            if (argc != 5)
-                die("USAGE: ec2 <dbfile> c <max_data> <max_rows>");
-
-            int max_data = atoi(argv[3]);
-            if (is_ok_param_size(max_data))
-                conn->db->MAX_DATA = max_data;
-
-            int max_rows = atoi(argv[4]);
-            if (is_ok_param_size(max_rows))
-                conn->db->MAX_ROWS = max_rows;
-
             Database_create(conn);
             Database_write(conn);
             break;
