@@ -30,7 +30,7 @@ An exercise is complete when:
 - [x] Exercise 18: Pointers to Functions
 - [x] Exercise 19: Zed's Awesome Debug Macros
 - [x] Exercise 20: Advanced Debugging Techniques
-- [ ] Exercise 21: Advanced Data Types and Flow Control
+- [x] Exercise 21: Advanced Data Types and Flow Control
 - [ ] Exercise 22: The Stack, Scope, and Globals
 - [ ] Exercise 23: Meet Duff's Device
 - [ ] Exercise 24: Input, Output, Files
