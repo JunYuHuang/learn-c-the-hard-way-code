@@ -2,7 +2,17 @@
 
 ## Notes
 
-- macros
+- handling errors in C is hard
+  - no exceptions; only have global `errno` value
+  - C programs only have 1 return value
+- CPP (C Pre-Processor) and macros
+  - macro: code that is replaced by its value
+    - why?
+      - better debugging (e.g. get exact error line numbers)
+      - clean way to wrap error handling logic
+      - conditionally generate code for values and functions
+  - CPP: a recursive templating system
+    - replaces macros before compile time with real code
 - misc
   - `goto` is like the `catch` in a `try-catch` block
   - `#ifndef <var>`: if `<var>` is not defined
