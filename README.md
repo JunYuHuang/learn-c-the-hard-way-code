@@ -32,7 +32,7 @@ An exercise is complete when:
 - [x] Exercise 20: Advanced Debugging Techniques
 - [x] Exercise 21: Advanced Data Types and Flow Control
 - [x] Exercise 22: The Stack, Scope, and Globals
-- [ ] Exercise 23: Meet Duff's Device
+- [x] Exercise 23: Meet Duff's Device
 - [ ] Exercise 24: Input, Output, Files
 - [ ] Exercise 25: Variable Argument Functions
 - [ ] Exercise 26: Project `logfind`
