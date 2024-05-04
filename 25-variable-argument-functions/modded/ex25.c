@@ -90,6 +90,7 @@ int read_scan(const char *fmt, ...)
                 case '\0':
                     sentinel("Invalid format, you ended with %%.");
                     break;
+
                 case 'd':
 
                     /*
@@ -105,6 +106,7 @@ int read_scan(const char *fmt, ...)
                     rc = read_int(out_int);
                     check(rc == 0, "Failed to read int");
                     break;
+
                 case 'c':
                     out_char = va_arg(argp, char *);
                     *out_char = fgetc(stdin);
@@ -132,16 +134,18 @@ int read_scan(const char *fmt, ...)
                     check(rc == 0, "Failed to read string.");
                     break;
 
-                /*
-                Finally, if the function encounters a character
-                that's not in the correct format, it just reads one
-                char to skip it. It doesn't care what that char is,
-                just that it should skip it.
-                */
                 default:
                     sentinel("Invalid format.");
             }
-        } else {
+        }
+
+        /*
+        Finally, if the function encounters a character
+        that's not in the correct format, it just reads one
+        char to skip it. It doesn't care what that char is,
+        just that it should skip it.
+        */
+        else {
             fgetc(stdin);
         }
 
@@ -187,6 +191,7 @@ int main(int argc, char *argv[])
 
     free(first_name);
     free(last_name);
+
     return 0;
 error:
     return -1;

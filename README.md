@@ -34,7 +34,7 @@ An exercise is complete when:
 - [x] Exercise 22: The Stack, Scope, and Globals
 - [x] Exercise 23: Meet Duff's Device
 - [x] Exercise 24: Input, Output, Files
-- [ ] Exercise 25: Variable Argument Functions
+- [x] Exercise 25: Variable Argument Functions
 - [ ] Exercise 26: Project `logfind`
 - [ ] Exercise 27: Creative and Defensive Programming
 - [ ] Exercise 28: Intermediate Makefiles

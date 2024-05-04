@@ -23,6 +23,13 @@
       - `char array[] = "abc"` sets 1st 4 elements in array to `'a'`, ... `'\0'`
       - can NOT set a value to array variable
       - can NOT do arithmetic on array variable
+  - `calloc()` vs `malloc()`
+    - `calloc()`:
+      - gives you clean (0-initialized) memory
+      - AKA clean allocation
+    - `malloc()`:
+      - gives you possily dirty memory
+      - AKA memory allocation
 - look up:
   - `va_list`: stack / array typedef for holding variable arguments
   - `va_start()`: allows access to variable arguments
@@ -34,12 +41,69 @@
   - `fgetc()`: gets the next char in the file (stream) as an int
   - `stdin`: standard input stream macro (FILE?)
   - ~~`strtol()`: converts a string to a long int~~
+- how does `read_string()` work?
+  - inputs(s):
+    - `out_string`: a ptr to a char ptr
+    - `max_buffer`: an int
+  - output(s):
+    - an int 0 on success else -1 (if failed)
+  - side effect(s):
+    - gets up to the first 100 chars of the user-inputted string
+    - sets `out_string`-pointed char array / ptr to this user string
+- how does `read_int()` work?
+  - input(s):
+    - `out_int`: an int ptr
+  - output(s):
+    - an int 0 on success else -1 (if failed)
+  - side effect(s):
+    - initialises a char ptr `input` to null
+    - calls `read_string(&input, 100)`
+    - sets `out_int`-pointed int value to `input` converted to an int
+- how does `read_scan()` work?
+  - input(s):
+    - a char ptr / string `fmt`
+    - a vararg int ptr `out_int` (read an int)
+    - a vararg char ptr `out_char` (read a char)
+    - a vararg int `max_buffer` (read a string)
+    - a vararg ptr to a char ptr `out_string` (read a string)
+  - output(s):
+    - an int 0 on success else -1 (if failed)
+  - side effects(s):
+    - for each char `c` in `fmt`:
+      - if `c` is a non-`'%'` char,
+        - gets the next user-inputted char but ignores it
+        - skips reading `c`
+        - continues
+      - sets `c` to the char after `c`
+      - if `c` is `'d'`,
+        - sets `out_int` to the next vararg's address (int ptr)
+        - calls `read_int(out_int)`
+      - else if `c` is `'c'`,
+        - sets `out_char` to the next vararg's address (char ptr)
+        - sets `out_char`-pointed char's value to the next user-inputted char
+      - else if `c` is `'s'`,
+        - sets `max_buffer` to the next vararg int
+        - sets `out_string` to the next vararg ptr to a char ptr
+        - calls `read_string(out_string, max_buffer)`
 
 ## Extra Credit
 
-- [x] Make double and triple sure that you know what each of the `out_` variables are doing. Most importantly, you should know what is `out_string` is and how it's a pointer to a pointer, so that you understand when you're setting the pointer versus the contents is important.
+- [x] 1. Make double and triple sure that you know what each of the `out_` variables are doing. Most importantly, you should know what is `out_string` is and how it's a pointer to a pointer, so that you understand when you're setting the pointer versus the contents is important.
   - See `./ec-1`
-- [ ] Write a similar function to `printf` that uses the varargs system, and rewrite `main` to use it.
+- [x] 2. Write a similar function to `printf` that uses the varargs system, and rewrite `main` to use it.
   - See `./ec-2`
-- [x] As usual, read the man page on all of this so that you know what it does on your platform. Some platforms will use macros, others will use functions, and some will have these do nothing. It all depends on the compiler and the platform you use.
+  - constraints
+    - cannot use `printf()` and its family of related functions
+    - must use vararg macros
+    - can use:
+      - `fputc()`
+      - `fputs()`
+      - `stdout`
+  - TODOs
+    - [x] print strings with no format specs and no escape chars
+    - [x] print strings with an escape chars and no format specs
+    - [x] print strings with a char format spec
+    - [x] print strings with a string format spec
+    - [x] print strings with an int format spec
+- [x] 3. As usual, read the man page on all of this so that you know what it does on your platform. Some platforms will use macros, others will use functions, and some will have these do nothing. It all depends on the compiler and the platform you use.
   - See [Notes](#notes)
