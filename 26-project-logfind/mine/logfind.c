@@ -4,13 +4,13 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <glob.h>
+#include <ctype.h>
 #include "dbg.h"
 
-#define MAX_FILE_BYTES 8192
+#define MAX_STR_LENGTH 8192
+#define MAX_BUFFER_BYTES 8192
 
 typedef enum search_mode_t { AND, OR } search_mode_t;
-
-typedef int (*glob_error_cb_t) (const char *epath, int eerrno);
 
 // for stopping the program early
 void die(const char *message)
@@ -49,7 +49,6 @@ int is_word_in_file(const char *word, FILE *file)
 
     // get the memory for the buffer
     buffer = calloc(1, file_bytes + 1);
-    buffer[file_bytes] = '\0';
     check_mem(buffer);
 
     // read / fill `file` into `buffer`
@@ -69,103 +68,129 @@ error:
     return 0;
 }
 
-// callback function for calling `glob()`
-int glob_error_callback(const char *epath, int eerrno)
+glob_t *get_filenames()
 {
-    printf(
-        "glob(): error no. %d at '%s'\n",
-        eerrno, epath
-    );
-    return -1;
-}
-
-// TODO:
-// - fix `get_allowed_files()` from seg faulting
-// - issue seems related to `glob()` and `globfree()` calls
-void get_allowed_files(
-    // char **results
-    // glob_error_cb_t glob_error_cb
-)
-{
-    // TODO:
-    // - fetch all files in the cwd of this file (`logfind.c`)
-    // - store these files' names in the array `results`
     int rc = 0;
-    char *glob_pattern = "*";
     int glob_flags = GLOB_MARK;
     glob_t *ptr_glob = malloc(sizeof(glob_t));
-    rc = glob(
-        glob_pattern,
-        glob_flags,
-        NULL,
-        ptr_glob
-    );
-    printf("glob() returned code %d\n", rc);
-    check(rc == 0, "glob() call failed.");
+    FILE *logfind_file = fopen(".logfind", "r");
 
-    for (int i = 0; i < ptr_glob->gl_pathc; i++) {
-        printf(
-            "Found pathname: '%s'\n",
-            ptr_glob->gl_pathv[i]
-        );
+    //
+    // 1. get all filenames in cwd if can't find `.logfind` file
+    //
+    if (!logfind_file){
+        rc = glob("*", glob_flags, NULL, ptr_glob);
+        check(rc == 0, "glob() call failed.");
+
+        return ptr_glob;
     }
 
-    globfree(ptr_glob);
+    //
+    // 2. get all filenames in cwd that match `.logfind`'s patterns
+    //
+    char *buffer = NULL;
+    long buffer_bytes = 0;
 
-    // char *buffer = NULL;
-    // long buffer_bytes = 0;
+    // get `.logfind` file's size in bytes
+    rewind(logfind_file);
+    rc = fseek(logfind_file, 0, SEEK_END);
+    check(
+        rc == 0,
+        "Failed to move cursor to end of '.logfind' file."
+    );
+    buffer_bytes = ftell(logfind_file);
+    check(
+        buffer_bytes != -1L,
+        "Failed to get size of '.logfind' file."
+    );
 
-    // FILE *logfind_file = fopen(".logfind", "r");
-    // check(logfind_file, "Failed to open '.logfind' file.");
+    // get the memory for the buffer
+    buffer = calloc(1, buffer_bytes + 1);
+    check_mem(buffer);
 
-    // TODO:
-    // - read all patterns (one per line) in file `.logfind`
-    // - store each pattern string as an element of `results`
-    // - store all file names that match the patterns in `filenames`
+    // read `.logfind` file into `buffer`
+    rewind(logfind_file);
+    rc = fread(buffer, buffer_bytes, 1, logfind_file);
+    check(rc == 1, "Failed to read '.logfind' into buffer.");
 
-    // // get the size of `file` in bytes
-    // rc = fseek(logfind_file, 0, SEEK_END);
-    // check(
-    //     rc == 0,
-    //     "Failed to move cursor to end of 'logfind' file."
-    // );
-    // buffer_bytes = ftell(logfind_file);
-    // check(
-    //     buffer_bytes != -1L,
-    //     "Failed to get size of 'logfind' file."
-    // );
+    // TODO: get all filenames that matches `.logfile`'s patterns
+    // - loop thru each string `str` in `buffer`
+    //   - each string is separated by a `\n`
+    //   - save string in a char ptr `str` & end it with a null byte
+    //   - call glob with `str`
 
-    // // get the memory for the buffer
-    // buffer = calloc(1, buffer_bytes + 1);
-    // buffer[buffer_bytes] = '\0';
-    // check_mem(buffer);
+    printf("--> Start of '.logfile' contents:\n");
+    for (int i = 0; buffer[i] != '\0'; i++) {
+        char ch = buffer[i];
+        // printf("%d, ", i);
+        // printf("[%c]", buffer[i]);
+        // printf("buffer[%i] = '%c'\n", i, buffer[i]);
+        if (!ispunct(ch) && !isalnum(ch) && !isblank(ch)) {
+            printf("weird char '%c' at pos %d\n", ch, i);
+        }
+    }
+    printf("--> End of '.logfile' contents:\n");
 
-    // // read / fill `logfind_file` into `buffer`
-    // rewind(logfind_file);
-    // rc = fread(buffer, buffer_bytes, 1, logfind_file);
-    // check(rc == 1, "Failed to read logfind_file into buffer.");
+    // char *substring = calloc(1, buffer_bytes + 1);
+    // int substring_pos = 0;
+    // for (int i = 0; buffer[i] != '\0'; i++) {
+    //     char ch = buffer[i];
+    //     // if (!isalnum(ch) && !isspace(ch)) continue;
+    //     // printf("buffer[%d] = '%c'\n", i, ch);
 
-    // printf("'.logfind' contents: \n%s", buffer);
+    //     // found a string pattern's end
+    //     if (ch == '\n') {
+    //         // debug
+    //         printf(
+    //             "get_filenames(): found newline at pos %d\n", i
+    //         );
 
-    // rc = fclose(logfind_file);
-    // check(rc == 0, "Failed to close '.logfind' file.");
+    //         // end the substring
+    //         substring[substring_pos] = '\0';
 
-    // if (buffer)
-    //     free(buffer);
+    //         // get all filenames that match that pattern
+    //         rc = glob(substring, glob_flags, NULL, ptr_glob);
+    //         check(rc == 0, "glob() call failed.");
+    //         // printf(
+    //         //     "get_filenames(): found pattern '%s'\n",
+    //         //     substring
+    //         // );
+
+    //         // clean up for the next substring
+    //         free(substring);
+    //         substring = calloc(1, buffer_bytes + 1);
+    //         substring_pos = 0;
+    //     }
+    //     // start or continue building the substring
+    //     else {
+    //         substring[substring_pos] = ch;
+    //         substring_pos++;
+    //     }
+    // }
+
+    // clean up
+    // if (substring)
+    //     free(substring);
+    rc = fclose(logfind_file);
+    check(rc == 0, "Failed to close '.logfind' file.");
+    free(buffer);
+
+    // temp: to remove after testing
+    rc = glob("*", glob_flags, NULL, ptr_glob);
+    check(rc == 0, "glob() call failed.");
+
+    return ptr_glob;
 
 error:
     printf("get_allowed_files(): erred\n");
 
-    // TODO:
-    // - loop thru every string in `results` and free it in memory
+    if (ptr_glob)
+        globfree(ptr_glob);
 
-    if (ptr_glob) globfree(ptr_glob);
+    if (buffer)
+        free(buffer);
 
-    // if (results)
-    //     free(results);
-
-    // if (buffer)
-    //     free(buffer);
+    return NULL;
 }
 
 int main(int argc, char *argv[])
@@ -179,32 +204,19 @@ int main(int argc, char *argv[])
     if (argc > 2 && strcmp(argv[1], "-o") == 0)
         mode = OR;
 
-    // TODO: make hardcoded files dynamically gotten from local dir
-    // - get all files' names in cwd whose size < `MAX_FILE_BYTES`
-    // - store them in an array of strings / char arrays `filenames`
-    // - if `.logfind` exists in cwd,
-    //   - filter array and only keep file names that match the
-    //   regex patterns (each on their own line) in `.logfind`
+    glob_t *results = get_filenames();
+    check(results, "Failed to get file names.");
 
-    // char **results = NULL;
-    // get_allowed_files(results, glob_error_callback);
-    // get_allowed_files(results);
-    get_allowed_files();
-
-    char *filenames[] = {
-        "dbg.h", "logfind.c", "Makefile",
-        // "test.sh"
-    };
+    char **filenames = results->gl_pathv;
+    size_t files_count = results->gl_pathc;
+    FILE *file;
+    char *pattern;
 
     // set diff params depending on selected mode
     // - AND mode is default
     // - OR mode parses patterns from 3rd el in `argv` (pos 2)
     int patterns_count = (mode == OR) ? argc - 2 : argc - 1;
-
     int matches_count = 0;
-    size_t files_count = sizeof(filenames) / sizeof(char *);
-    FILE *file;
-    char *pattern;
 
     for (int i = 0; i < files_count; i++) {
         matches_count = 0;
@@ -227,9 +239,14 @@ int main(int argc, char *argv[])
             printf("%s\n", filenames[i]);
     }
 
+    globfree(results);
+
     return 0;
 
 error:
+    if (results)
+        globfree(results);
+
     die("Program crashed!");
     return -1;
 }
