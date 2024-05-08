@@ -3,7 +3,7 @@
 ## Spec Tests
 
 ```bash
-# feature 1 test (works with AND\'d terms)
+# feature 1 test (works with AND'd terms)
 ./logfind MAX
 logfind.c
 Makefile
@@ -11,7 +11,7 @@ Makefile
 ./logfind MAX error
 Makefile
 
-# feature 2 test (works with optional OR\'d terms)
+# feature 2 test (works with optional OR'd terms)
 ./logfind -o MAX error
 logfind.c
 dbg.h
@@ -60,17 +60,19 @@ TODO
 - misc
   - can declare AND initialise int index variable inside a for loop
   - stream: a continuous flow of bytes or chars between input and output devices
-  - bufer: temp store in memory of input or output data
+  - buffer: temp store in memory of input or output data
+  - `restrict` qualifier keyword:
+    - makes an object (i.e. non-primitive) pointer the only pointer that can access that object
 
 ## `logfind` Tool Features
 
 - [ ] 1. This tool takes any sequence of words and assumes I mean "and" for them. So `logfind zedshaw smart guy` will find all files that have `zedshaw` and `smart` and `guy` in them.
   - [x] get all keywords from CLI
-  - [ ] finds names of all files in current directory of the binary file (`logfind`)
+  - [ ] finds names of all files in current directory of the binary file (`logfind`) using `glob`
 - [x] 2. It takes an optional argument of `-o` if the parameters are meant to be _or_ logic.
   - done
 - [ ] 3. It loads the list of allowed log files from `~/.logfind`.
-  - [ ] Make a file `.logfind`
+  - [x] Make a file `.logfind`
   - if `.logfind` file does not exist in current directory,
     - default to getting list of ALL files in current directory?
   - else (`.logfind` file exists),

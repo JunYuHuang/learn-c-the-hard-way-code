@@ -42,14 +42,14 @@ echo "\$ ./$c_binary -o"
 ./"$c_binary" -o
 echo ""
 
-# Feature 3: run it with 2 (extra) arguments
+# Feature 2: run it with 2 (extra) arguments
 echo "> Feature 2: run it with 2 (extra) arguments"
 echo "\$ ./$c_binary -o MAX ERROR"
 ./"$c_binary" -o MAX ERROR
 echo ""
 
-# Feature 3: run it with 1 (extra) argument
-echo "> Feature 2: run it with 2 (extra) argument"
+# Feature 2: run it with 1 (extra) argument
+echo "> Feature 2: run it with 1 (extra) argument"
 echo "\$ ./$c_binary -o ERROR"
 ./"$c_binary" -o ERROR
 echo ""
