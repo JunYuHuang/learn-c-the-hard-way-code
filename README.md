@@ -36,7 +36,7 @@ An exercise is complete when:
 - [x] Exercise 24: Input, Output, Files
 - [x] Exercise 25: Variable Argument Functions
 - [x] Exercise 26: Project `logfind`
-- [ ] Exercise 27: Creative and Defensive Programming
+- [x] Exercise 27: Creative and Defensive Programming
 - [ ] Exercise 28: Intermediate Makefiles
 - [ ] Exercise 29: Libraries and Linking
 - [ ] Exercise 30: Automated Testing

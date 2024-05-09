@@ -4,10 +4,18 @@
 #include <assert.h>
 
 /*
+The `copy` function is typical C code and it's the source of a huge
+number of buffer overflows. It's flawed because it assumes that it
+will always receive a valid, terminated C string (with `'\0'`), and
+just uses a `while-loop` to process it. Problem is, to ensure that
+is incredibly difficult, and if it's not handled right, it causes
+the `while-loop` to loop infinitely. A cornerstone of writing solid
+code is never writing loops that can possibly loop forever.
+*/
+/*
  * Naive copy that assumes all inputs are always valid
  * taken from K&R C and cleaned up a bit.
  */
-
 void copy(char to[], char from[])
 {
     int i = 0;
@@ -18,6 +26,15 @@ void copy(char to[], char from[])
     }
 }
 
+/*
+The `safercopy` function tries to solve this by requiring the caller
+to give the lengths of the two strings it must deal with. By doing
+this, it can make certain checks about these strings that the `copy`
+function can't. It can check that the lengths are right, and that
+the `to` string has enough space, and it will always terminate.
+It's impossible for this function to run on forever like the `copy`
+function.
+*/
 /*
  * A safer version that checks for many common errors using the
  * length of each string to control the loops and termination.
@@ -45,7 +62,7 @@ int safercopy(int from_len, char *from, int to_len, char *to)
 
 int main (int argc, char *argv[])
 {
-    // careful to understand why we can get theses sizes
+    // careful to understand why we can get these sizes
     char from[] = "0123456789";
     int from_len = sizeof(from);
 
@@ -59,7 +76,7 @@ int main (int argc, char *argv[])
     check(rc > 0, "Failed to safercopy.");
     check(to[to_len - 1] == '\0', "String not terminated.");
 
-    debug("Result is '%s':%d", to, to_len);
+    debug("Result is: '%s':%d", to, to_len);
 
     // now try to break it
     rc = safercopy(from_len * -1, from, to_len, to);
