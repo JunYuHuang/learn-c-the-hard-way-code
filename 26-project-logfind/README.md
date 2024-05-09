@@ -26,8 +26,23 @@ Makefile
 
 ## Notes
 
-- notes on Zed's solution
-  - TODO
+- notes on Zed's solution 1
+  - add `logfind.c`: runs check for args
+  - add `Makefile`: set up with `all:` phony target
+- notes on Zed's solution 2
+  - add `dbg.h`
+  - update `logfind.c`
+    - read itself and print each of its lines
+- notes on Zed's solution 3
+  - update `logfind.c`
+    - get `glob()` calls working with hardcoded patterns
+- notes on Zed's solution 4
+  - update `logfind.c`
+    - more on `glob()` calls
+- notes on Zed's solution 5
+  - update `logfind.c`
+    - should initialise values for variables
+    - refactoring stuff out to functions
 - notes for my solution
   - feature 3 (allow log file types in `~./logfind`)
     - `./logfind` is a newline-separated list of allowed log file types
