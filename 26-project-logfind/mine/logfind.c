@@ -56,7 +56,7 @@ int is_word_in_file(const char *word, FILE *file)
     rc = fread(buffer, file_bytes, 1, file);
     check(rc == 1, "Failed to read file into buffer.");
 
-    // check if `word` is a substring in `file`'s contents or not
+    // check if `word` is a pattern in `file`'s contents or not
     word_start_char = strstr(buffer, word);
     free(buffer);
     return word_start_char ? 1 : 0;
@@ -71,7 +71,7 @@ error:
 glob_t *get_filenames()
 {
     int rc = 0;
-    int glob_flags = GLOB_MARK;
+    int glob_flags = GLOB_MARK | GLOB_BRACE;
     glob_t *ptr_glob = malloc(sizeof(glob_t));
     FILE *logfind_file = fopen(".logfind", "r");
 
@@ -113,70 +113,50 @@ glob_t *get_filenames()
     rc = fread(buffer, buffer_bytes, 1, logfind_file);
     check(rc == 1, "Failed to read '.logfind' into buffer.");
 
-    // TODO: get all filenames that matches `.logfile`'s patterns
-    // - loop thru each string `str` in `buffer`
-    //   - each string is separated by a `\n`
-    //   - save string in a char ptr `str` & end it with a null byte
-    //   - call glob with `str`
+    // Get all filenames that matches `.logfile`'s patterns
+    // - loop thru each substring `str` in `buffer`
+    //   - each substring is appended with a `\r` then a `\n` char
+    //   - append each substring `str` to `pattern`
+    //   - separate each substring in the pattern with a comma `','`
+    //   - build the pattern string used to call `blob()` with
+    //     - pattern string format: `"{<str 1>,..<str N>}"`
 
-    printf("--> Start of '.logfile' contents:\n");
+    char *pattern = calloc(1, buffer_bytes + 1);
+    pattern[0] = '{';
+    int pattern_pos = 1;
     for (int i = 0; buffer[i] != '\0'; i++) {
         char ch = buffer[i];
-        // printf("%d, ", i);
-        // printf("[%c]", buffer[i]);
-        // printf("buffer[%i] = '%c'\n", i, buffer[i]);
-        if (!ispunct(ch) && !isalnum(ch) && !isblank(ch)) {
-            printf("weird char '%c' at pos %d\n", ch, i);
+
+        // skip newline chars
+        if (ch == '\n')
+            continue;
+
+        // found a string pattern's end (carriage return char)
+        if (ch == '\r') {
+            // end the pattern
+            pattern[pattern_pos] = ',';
+
+            // clean up for the next pattern
+            pattern_pos++;
+        }
+        // start or continue building the pattern
+        else {
+            pattern[pattern_pos] = ch;
+            pattern_pos++;
         }
     }
-    printf("--> End of '.logfile' contents:\n");
 
-    // char *substring = calloc(1, buffer_bytes + 1);
-    // int substring_pos = 0;
-    // for (int i = 0; buffer[i] != '\0'; i++) {
-    //     char ch = buffer[i];
-    //     // if (!isalnum(ch) && !isspace(ch)) continue;
-    //     // printf("buffer[%d] = '%c'\n", i, ch);
-
-    //     // found a string pattern's end
-    //     if (ch == '\n') {
-    //         // debug
-    //         printf(
-    //             "get_filenames(): found newline at pos %d\n", i
-    //         );
-
-    //         // end the substring
-    //         substring[substring_pos] = '\0';
-
-    //         // get all filenames that match that pattern
-    //         rc = glob(substring, glob_flags, NULL, ptr_glob);
-    //         check(rc == 0, "glob() call failed.");
-    //         // printf(
-    //         //     "get_filenames(): found pattern '%s'\n",
-    //         //     substring
-    //         // );
-
-    //         // clean up for the next substring
-    //         free(substring);
-    //         substring = calloc(1, buffer_bytes + 1);
-    //         substring_pos = 0;
-    //     }
-    //     // start or continue building the substring
-    //     else {
-    //         substring[substring_pos] = ch;
-    //         substring_pos++;
-    //     }
-    // }
+    // end the final composite glob pathname pattern
+    pattern[pattern_pos] = '}';
+    pattern[pattern_pos + 1] = '\0';
 
     // clean up
-    // if (substring)
-    //     free(substring);
     rc = fclose(logfind_file);
     check(rc == 0, "Failed to close '.logfind' file.");
     free(buffer);
 
-    // temp: to remove after testing
-    rc = glob("*", glob_flags, NULL, ptr_glob);
+    // get the filenames that match the final composite pattern
+    rc = glob(pattern, glob_flags, NULL, ptr_glob);
     check(rc == 0, "glob() call failed.");
 
     return ptr_glob;

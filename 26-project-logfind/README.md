@@ -22,12 +22,6 @@ cat .logfind
 *.c
 *.h
 Makefile
-
-# feature 4 test (???)
-TODO
-
-# feature 5 test (???)
-TODO
 ```
 
 ## Notes
@@ -51,7 +45,7 @@ TODO
         - move the pointer / cursor position in `f` to it start
         - make int var `word_length` = length of `word`
         - TODO: how to parse lines in a file as a string?
-        - TODO: check if current read oart of file matches `f`'s name
+        - TODO: check if current read part of file matches `f`'s name
       - if `matches_count` == size of `keywords`,
         - push `f`'s string name to `res`
       - close `f`
@@ -74,11 +68,11 @@ TODO
   - [x] finds names of all files in current directory of the binary file (`logfind`) using `glob`
 - [x] 2. It takes an optional argument of `-o` if the parameters are meant to be _or_ logic.
   - done
-- [ ] 3. It loads the list of allowed log files from `~/.logfind`.
+- [x] 3. It loads the list of allowed log files from `~/.logfind`.
   - [x] Make a file `.logfind`
   - [x] Get all file names in cwd if `.logfind` file is not in cwd
-  - [ ] If `.logfind` file is in cwd, only get all file names in cwd that match the carriage-return separated patterns in `.logfind`
-- [ ] 4. The list of file names can be anything that the `glob` function allows. Refer to `man 3 glob` to see how this works. I suggest starting with just a flat list of exact files, and then add `glob` functionality.
-  - TODO
+  - [x] If `.logfind` file is in cwd, only get all file names in cwd that match the carriage-return separated patterns in `.logfind`
+- [x] 4. The list of file names can be anything that the `glob` function allows. Refer to `man 3 glob` to see how this works. I suggest starting with just a flat list of exact files, and then add `glob` functionality.
+  - done
 - [x] 5. You should output the matching files as you scan, and try to match them as fast as possible.
   - done
