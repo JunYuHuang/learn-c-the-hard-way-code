@@ -59,7 +59,8 @@ TESTS=$(patsubst %.c,%,$(TEST_SRC))
 # which you will change to be whatever library you're actually
 # trying to build.
 #
-TARGET=build/libYOUR_LIBRARY.a
+# TARGET=build/libYOUR_LIBRARY.a
+TARGET=build/libex28.a
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
 #

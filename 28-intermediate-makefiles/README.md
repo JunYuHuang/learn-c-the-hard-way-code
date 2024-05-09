@@ -2,7 +2,22 @@
 
 ## Notes
 
-- TODO
+- covers GNU `make
+- look up:
+  - `make` stuff
+    - `patsubst`: ?
+- misc
+  - watched video to timestamp 8:19
+  - `void` data type: ?
+  - `void` vs `NULL`
+    - ?
+  - TODO: fix errors with building use `make`
+    - something about undefined refs to various macro functions
+      - `dlsym()`
+      - `dlerror()`
+      - `dlopen()`
+      - `dlclose()`
+    - missing `<dlfcn.h>` header library in WSL Ubuntu 18.04?
 
 ## Extra Credit
 
