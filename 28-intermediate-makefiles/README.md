@@ -24,6 +24,13 @@
   - `void` vs `NULL`
     - `NULL`: a special value for a pointer
     - `void`: a special pointer type that refers to a pointer of any valid type (e.g. `int` pointer, etc.)
+  - `ar rcs`: runs the `ar` CLI tool with flags `rcs`
+    - `ar` tool: makes, updates, and gets from archive files
+    - `r` flag: insert files `members...` into archive with replacement
+    - `c` flag: create the archive
+    - `s` flag: add / update an object-file index to the archive
+  - `ranlib`: makes an index or table of contents for an archive
+    - same as running `ar -s`
 
 ## Extra Credit
 
