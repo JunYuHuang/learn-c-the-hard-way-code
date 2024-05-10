@@ -5,7 +5,7 @@
 # `OPTFLAGS` variable at the end that lets people augment the build
 # options as needed.
 #
-CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
+CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -Wl,--no-as-needed -ldl -DNDEBUG $(OPTFLAGS)
 
 #
 # These options used when linking a library. Someone else can
@@ -59,8 +59,8 @@ TESTS=$(patsubst %.c,%,$(TEST_SRC))
 # which you will change to be whatever library you're actually
 # trying to build.
 #
-# TARGET=build/libYOUR_LIBRARY.a
-TARGET=build/libex28.a
+TARGET=build/libYOUR_LIBRARY.a
+# TARGET=build/libex28.a
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
 #
