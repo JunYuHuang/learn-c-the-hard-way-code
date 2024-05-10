@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     /*
     If there's an error, I do the usual check and exit, but notice
-    at then end that I'm using `dlerror` to find out what the
+    at the end that I'm using `dlerror` to find out what the
     library-related error was.
     */
     check(

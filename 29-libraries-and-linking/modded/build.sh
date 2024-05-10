@@ -1,7 +1,7 @@
 # compile the lib file and make the .so
-# you may need -fPIC here on some paltforms. add that if you get an
+# you may need -fPIC here on some platforms. add that if you get an
 # error
-cc -c libex29.c -o libex29.o
+cc -c libex29.c -o libex29.o -fPIC
 cc -shared -o libex29.so libex29.o
 
 # make the loader program
