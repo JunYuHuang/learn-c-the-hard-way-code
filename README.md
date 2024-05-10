@@ -1,6 +1,6 @@
 # Learn C The Hard Way - Exercise Solutions
 
-Repository of my solutions for the coding execises in the book `Learn C The Hard Way` by Zed A. Shaw.
+My coding solutions for Zed A. Shaw's `Learn C The Hard Way` book / course.
 
 ## Completed Exercises
 
