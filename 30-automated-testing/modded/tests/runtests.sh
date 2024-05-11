@@ -1,3 +1,14 @@
+#
+# TLDR:
+# - for each C binary test file `i` in `./tests` that matches the
+# pattern `*_tests`
+# - if file `i` exists and is a regular file,
+#   - runs each C binary file in Valgrind
+#   - if C binary run successfully in Valgrind,
+#       - print `PASS`
+#   - else print error with logs
+#
+
 echo "Running unit tests:"
 
 for i in tests/*_tests

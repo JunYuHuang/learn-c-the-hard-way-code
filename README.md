@@ -39,7 +39,7 @@ An exercise is complete when:
 - [x] Exercise 27: Creative and Defensive Programming
 - [x] Exercise 28: Intermediate Makefiles
 - [x] Exercise 29: Libraries and Linking
-- [ ] Exercise 30: Automated Testing
+- [x] Exercise 30: Automated Testing
 - [ ] Exercise 31: Common Undefined Behavior
 - [ ] Exercise 32: Double Linked Lists
 - [ ] Exercise 33: Linked List Algorithms
