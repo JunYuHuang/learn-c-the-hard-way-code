@@ -4,9 +4,13 @@
 
 - TODO
 - misc
-  - error when running `make`
+  - error when running `make` to run the test
     - fix:
       - change `#include <lcthw/list.h>` to `#include<lcthw/list.c>` in `/tests/list_tests.c`
+  - `static` keyword:
+    - makes a variable / function private?
+  - `unshift`: insert at start of list (as a new first element)
+  - `shift`: i.e. removes / pops a list's first element
 
 ## How To Improve It
 
