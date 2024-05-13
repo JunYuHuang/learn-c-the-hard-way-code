@@ -77,6 +77,14 @@ how I use this when I talk about the implementation.
 
 Iterates over the elements in the list.
 */
+/*
+My own notes for the `LIST_FOREACH()` function macro:
+- `L`: pointer to the `List` struct
+- `S`: pointer to the first `ListNode` struct part of the list `L`
+- `M`: pointer to the next `ListNode` struct that may or may not
+(i.e. pointing to `NULL`) be part of the list `L`
+- `V`: pointer to the current `ListNode` struct part of the list `L`
+*/
 #define LIST_FOREACH(L, S, M, V) \
             ListNode *_node = NULL; \
             ListNode *V = NULL; \

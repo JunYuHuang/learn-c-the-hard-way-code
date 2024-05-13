@@ -47,7 +47,7 @@ void List_clear_destroy(List *list)
 
 /*
 The first operation that demonstrates the advantage of a linked
-list. It adss a new element to the end of the list, and because
+list. It adds a new element to the end of the list, and because
 that's just a couple of pointer assignments, it does it very fast.
 */
 void List_push(List *list, void *value)
@@ -120,7 +120,7 @@ void *List_shift(List *list)
 
 /*
 This is actually doing all of the removal when you do `List_pop` or
-`List_shift`. Sometihng that seems to be always be difficult in data
+`List_shift`. Something that seems to be always be difficult in data
 structures is removing things, and this function is no different. It
 has to handle quite a few conditions depending on if the element
 being removed is at the front, the end, both the front and the end,

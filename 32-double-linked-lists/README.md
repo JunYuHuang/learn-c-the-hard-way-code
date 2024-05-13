@@ -2,7 +2,18 @@
 
 ## Notes
 
-- TODO
+- algorithm: series of steps to achieve a goal
+- data structures: efficient ways to store data
+- double linked list:
+  - each node is interconnected with `next` and `prev` pointers
+  - pros
+    - fast inserts and deletes
+    - easy implementation
+  - cons
+    - slow traversal
+- how to code review
+  - step thru each line of code and each function call
+  - faster to do using `vim` tags
 - misc
   - error when running `make` to run the test
     - fix:
@@ -11,6 +22,10 @@
     - makes a variable / function private?
   - `unshift`: insert at start of list (as a new first element)
   - `shift`: i.e. removes / pops a list's first element
+  - consider reading The Algorithm Design Manual book
+  - programming idiom:
+    - a conventional way to do something in a programming language
+    - e.g. "hello world" program
 
 ## How To Improve It
 
