@@ -29,14 +29,14 @@
 
 ## How To Improve It
 
-- [ ] 1. You can make `List_clear_destroy` more efficient by using `LIST_FOREACH` and doing both `free` calls inside one loop.
-  - TODO
+- [x] 1. You can make `List_clear_destroy` more efficient by using `LIST_FOREACH` and doing both `free` calls inside one loop.
+  - See `./htii-1`
 - [ ] 2. You can add asserts for preconditions so that the program isn't given a `NULL` value for the `List *list` parameters.
   - TODO
 - [ ] 3. You can add invariants that check that the list's contents are always correct, such as `count` is never `< 0`, and if `count > 0`, then `first` isn't `NULL`.
   - TODO
-- [ ] 4. You can add documentation to the header file in the form of comments before each struct, function, and macro that describes what it does.
-  - TODO
+- [ ] ~~4. You can add documentation to the header file in the form of comments before each struct, function, and macro that describes what it does.~~
+  - Skipped
 
 ## Extra Credit
 
