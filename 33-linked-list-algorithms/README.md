@@ -9,6 +9,27 @@
       - replace `Makefile` with updated one from the [`liblcthw` GitHub repo](https://github.com/zedshaw/liblcthw/blob/master/Makefile)
       - remove `-lbsd` in line 15 of the `Makefile`
 
+## My Solution Notes
+
+- bubble sort
+  - edge cases to handle
+    - empty list
+    - list of size 1
+    - list of size > 1
+  - double nested loop
+    - outer `do-while-loop`
+      - loop while `is_swapped` bool int is true
+    - inner loop
+      - use `LIST_FOREACH` function macro
+      - if 2 adjacent elements are out of order,
+        - swap their values
+  - how to know if 2 elements `list[i]` and `list[i + 1]` in the list are out of order given a compare callback function?
+    - compare callback function returns an int that means `list[i]` comes AFTER `list[i + 1]` when `list[i]` is supposed to come before `list[i + 1]`
+  - how to swap 2 adjacent nodes in C?
+    - only swap their values using a third temp `void` pointer that temporarily stores the value of either `list[i]` or `list[i + 1]`
+- merge sort
+  - TODO
+
 ## How To Improve It
 
 - [ ] 1. The merge sort does a crazy amount of copying and creating lists, so find ways to reduce this.

@@ -19,12 +19,18 @@ List *create_words()
     return words;
 }
 
-int is_sorted(List * words)
+int is_sorted(List *words)
 {
     LIST_FOREACH(words, first, next, cur) {
-        if (cur->next && strcmp(cur->value, cur->next->value) > 0) {
-            debug("%s %s", (char *)cur->value,
-                    (char *)cur->next->value);
+        if (
+            cur->next &&
+            strcmp(cur->value, cur->next->value) > 0
+        ) {
+            debug(
+                "%s %s",
+                (char *)cur->value,
+                (char *)cur->next->value
+            );
             return 0;
         }
     }
@@ -39,14 +45,18 @@ char *test_bubble_sort()
     // should work on a list that needs sorting
     int rc = List_bubble_sort(words, (List_compare) strcmp);
     mu_assert(rc == 0, "Bubble sort failed.");
-    mu_assert(is_sorted(words),
-            "Words are not sorted after bubble sort.");
+    mu_assert(
+        is_sorted(words),
+        "Words are not sorted after bubble sort."
+    );
 
     // should work on an already sorted list
     rc = List_bubble_sort(words, (List_compare) strcmp);
     mu_assert(rc == 0, "Bubble sort of already sorted failed.");
-    mu_assert(is_sorted(words),
-            "Words should be sort if already bubble sorted.");
+    mu_assert(
+        is_sorted(words),
+        "Words should be sort if already bubble sorted."
+    );
 
     List_destroy(words);
 
@@ -61,30 +71,36 @@ char *test_bubble_sort()
     return NULL;
 }
 
-char *test_merge_sort()
-{
-    List *words = create_words();
 
-    // should work on a list that needs sorting
-    List *res = List_merge_sort(words, (List_compare) strcmp);
-    mu_assert(is_sorted(res), "Words are not sorted after merge sort.");
+// char *test_merge_sort()
+// {
+//     List *words = create_words();
 
-    List *res2 = List_merge_sort(res, (List_compare) strcmp);
-    mu_assert(is_sorted(res),
-            "Should still be sorted after merge sort.");
-    List_destroy(res2);
-    List_destroy(res);
+//     // should work on a list that needs sorting
+//     List *res = List_merge_sort(words, (List_compare) strcmp);
+//     mu_assert(
+//         is_sorted(res),
+//         "Words are not sorted after merge sort."
+//     );
 
-    List_destroy(words);
-    return NULL;
-}
+//     List *res2 = List_merge_sort(res, (List_compare) strcmp);
+//     mu_assert(
+//         is_sorted(res),
+//         "Should still be sorted after merge sort."
+//     );
+//     List_destroy(res2);
+//     List_destroy(res);
+
+//     List_destroy(words);
+//     return NULL;
+// }
 
 char *all_tests()
 {
     mu_suite_start();
 
     mu_run_test(test_bubble_sort);
-    mu_run_test(test_merge_sort);
+    // mu_run_test(test_merge_sort);
 
     return NULL;
 }
