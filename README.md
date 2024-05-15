@@ -42,7 +42,7 @@ An exercise is complete when:
 - [x] Exercise 30: Automated Testing
 - [x] Exercise 31: Common Undefined Behavior
 - [x] Exercise 32: Double Linked Lists
-- [ ] Exercise 33: Linked List Algorithms
+- [x] Exercise 33: Linked List Algorithms
 - [ ] Exercise 34: Dynamic Array
 - [ ] Exercise 35: Sorting and Searching
 - [ ] Exercise 36: Safer Strings

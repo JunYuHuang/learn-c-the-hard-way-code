@@ -2,12 +2,32 @@
 
 ## Notes
 
-- TODO
+- sorting algorithms
+  - bubble sort
+    - very slow
+  - merge sort
+    - decent
+  - quick sort
+    - used often in real world
+- how to code review
+  - check every line of code
+    - check if each function call is being called correctly
+      - proper arg value(s)
+      - proper return value(s)
+      - etc.
 - misc
   - bug with "undefined reference" or "multiple definition of" issue when importing headers or C files
     - fix:
       - replace `Makefile` with updated one from the [`liblcthw` GitHub repo](https://github.com/zedshaw/liblcthw/blob/master/Makefile)
       - remove `-lbsd` in line 15 of the `Makefile`
+  - `inline` keyword in C:
+    - makes a function faster?
+    - a C program / compiler performance optimization?
+  - real world stats / profiling > theoretical (i.e. Big O) perf
+  - learn tag jumping in `vim` for doing code review
+  - learn exuberant ctags
+    - use to create and load tags in `vim`
+  - many sort algorithms suffer when input list is already sorted
 
 ## My Solution Notes
 
