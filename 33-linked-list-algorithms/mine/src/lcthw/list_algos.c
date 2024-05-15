@@ -16,7 +16,7 @@ void swap(ListNode *node1, ListNode *node2)
 }
 
 /*
-- returns 0 on success else -1 on fail
+- bubble sort returns 0 on success else -1 on fail
 */
 int List_bubble_sort(List *list, List_compare compare_cb)
 {
@@ -44,4 +44,81 @@ int List_bubble_sort(List *list, List_compare compare_cb)
     return 0;
 }
 
-// TODO - merge sort
+/*
+- helper function for `List_merge_sort()`
+- the `merge` function merges the left and right sublists
+*/
+List *merge(List *left, List *right, List_compare compare_cb)
+{
+    List *result = List_create();
+    void *value = NULL;
+
+    while (List_count(left) > 0 && List_count(right) > 0) {
+        // is sorted (left node comes before right node)
+        if (compare_cb(List_first(left), List_first(right)) <= 0) {
+            List_push(result, List_shift(left));
+        }
+        // is not sorted (left node comes after right node)
+        else {
+            List_push(result, List_shift(right));
+        }
+    }
+
+    // Either left or right may have elements left; consume them.
+    // (Only one of the following loops will be entered.)
+    while (List_count(left) > 0) {
+        List_push(result, List_shift(left));
+    }
+    while (List_count(right) > 0) {
+        List_push(result, List_shift(right));
+    }
+
+    return result;
+}
+
+/*
+- merge sort returns the list sorted in-place
+- recursively divides the input list into smaller sublists until
+the sublists are trivially sorted, and then merges the sublists
+while returning up the call chain
+*/
+List *List_merge_sort(List *list, List_compare compare_cb)
+{
+    // Base case. A list of zero or one elements is sorted by
+    // definition.
+    if (List_count(list) < 2)
+        return list;
+
+    // Recursive case. First, divide the list into equal-sized
+    // sublists consisting of the first half and second half of
+    // the list. This assumes lists start at index 0.
+    List *left = List_create();
+    List *right = List_create();
+    int i = 0;
+    int mid_pos = List_count(list) / 2;
+
+    LIST_FOREACH(list, first, next, cur) {
+        if (i < mid_pos) {
+            List_push(left, cur->value);
+        } else {
+            List_push(right, cur->value);
+        }
+        i++;
+    }
+
+    // Recursively sort both sublists.
+    List *new_left = List_merge_sort(left, compare_cb);
+    List *new_right = List_merge_sort(right, compare_cb);
+
+    // Clean up.
+    if (new_left != left)
+        List_destroy(left);
+    if (new_right != right)
+        List_destroy(right);
+
+    // Then merge the now-sorted sublists.
+    List *result = merge(new_left, new_right, compare_cb);
+    List_destroy(new_left);
+    List_destroy(new_right);
+    return result;
+}

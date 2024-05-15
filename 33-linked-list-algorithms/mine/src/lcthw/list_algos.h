@@ -3,12 +3,13 @@
 
 #include <lcthw/list.h>
 
-// bubble sort
 typedef int (*List_compare) \
     (const void *value_1, const void *value_2);
+
+// bubble sort
 int List_bubble_sort(List *list, List_compare compare_cb);
 
 // merge sort
-// - TODO
+List *List_merge_sort(List *list, List_compare compare_cb);
 
 #endif
