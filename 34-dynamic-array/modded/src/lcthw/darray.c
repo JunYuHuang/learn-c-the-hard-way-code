@@ -18,14 +18,16 @@ DArray *DArray_create(size_t element_size, size_t initial_max)
     return array;
 
 error:
-    if (array)
-        free(array);
+    DArray_destroy(array);
+
     return NULL;
 }
 
 void DArray_clear(DArray *array)
 {
     int i = 0;
+    check(array != NULL, "Invalid array.");
+
     if (array->element_size > 0) {
         for (i = 0; i < array->max; i++) {
             if (array->contents[i] != NULL) {
@@ -33,6 +35,8 @@ void DArray_clear(DArray *array)
             }
         }
     }
+error:  // fallthrough
+    return;
 }
 
 static inline int DArray_resize(DArray *array, size_t newsize)
@@ -55,8 +59,17 @@ error:
     return -1;
 }
 
+/*
+- adds 300 new element slots to `array` via `DArray_resize()`
+- fills the first 301 bytes that `array->contents + old_max`
+points to with zeroes
+- `array->contents + old_max` results in???
+    - TODO
+*/
 int DArray_expand(DArray *array)
 {
+    check(array != NULL, "Invalid array.");
+
     size_t old_max = array->max;
     check(
         DArray_resize(array, array->max + array->expand_rate) == 0,
@@ -71,31 +84,44 @@ error:
     return -1;
 }
 
+/*
+- shrinks `array`'s size to 1 plus the max of its last element's position (`array->end`) or 300
+*/
 int DArray_contract(DArray *array)
 {
+    check(array != NULL, "Invalid array.");
     int new_size = array->end < (int)array->expand_rate ?
         (int)array->expand_rate : array->end;
 
     return DArray_resize(array, new_size + 1);
+
+error:
+    return -1;
 }
 
 void DArray_destroy(DArray *array)
 {
     if (array) {
-        if (array->contents)
+        if (array->contents) {
             free(array->contents);
+        }
         free(array);
     }
 }
 
 void DArray_clear_destroy(DArray *array)
 {
+    check(array != NULL, "Invalid array.");
     DArray_clear(array);
     DArray_destroy(array);
+
+error:  // fallthrough
+    return;
 }
 
 int DArray_push(DArray *array, void *el)
 {
+    check(array != NULL, "Invalid array.");
     array->contents[array->end] = el;
     array->end++;
 
@@ -104,10 +130,14 @@ int DArray_push(DArray *array, void *el)
     } else {
         return 0;
     }
+
+error:
+    return -1;
 }
 
 void *DArray_pop(DArray *array)
 {
+    check(array != NULL, "Invalid array.");
     check(array->end - 1 >= 0, "Attempt to pop from empty array.");
 
     void *el = DArray_remove(array, array->end - 1);
@@ -117,7 +147,7 @@ void *DArray_pop(DArray *array)
         DArray_end(array) > (int)array->expand_rate &&
         DArray_end(array) % array->expand_rate
     ) {
-        DArray_contract(array);
+        check(DArray_contract(array) != -1, "Failed to contact.");
     }
 
     return el;

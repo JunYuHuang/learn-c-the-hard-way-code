@@ -19,6 +19,16 @@ callback function, but that's not as fast and it's harder to use.
 #include <assert.h>
 #include <lcthw/dbg.h>
 
+/*
+`DArray` struct notes:
+- stores an array of pointers
+- `end`: index of last element in `DArray`
+- `max`: max size or count of elements in `DArray`
+- `element_size`: size of each element in `DArray`
+- `expand_rate`: count of element slots to add to `DArray` should
+`DArray` meet or exceed `max` total elements
+- `contents`: actual static array or pointer of elements in `DArray`
+*/
 typedef struct DArray {
     int end;
     int max;
@@ -53,6 +63,7 @@ void DArray_clear_destroy(DArray *array);
 
 static inline void DArray_set(DArray *array, int i, void *el)
 {
+    check(array != NULL, "Invalid array.");
     check(i < array->max, "darray attempt to set past max");
     if (i > array->end)
         array->end = i;
@@ -63,6 +74,7 @@ error:
 
 static inline void *DArray_get(DArray *array, int i)
 {
+    check(array != NULL, "Invalid array.");
     check(i < array->max, "darray attempt to get past max");
     return array->contents[i];
 error:
@@ -71,15 +83,24 @@ error:
 
 static inline void *DArray_remove(DArray *array, int i)
 {
+    check(array != NULL, "Invalid array.");
     void *el = array->contents[i];
 
     array->contents[i] = NULL;
 
     return el;
+
+error:  // fallthrough
+    return NULL;
 }
 
+/*
+- returns a pointer for memory allocated for a 1-sized array given an existing `DArray`
+- returns a new element of the element size of a given existing `DArray`
+*/
 static inline void *DArray_new(DArray *array)
 {
+    check(array != NULL, "Invalid array.");
     check(
         array->element_size > 0,
         "Can't use DArray_new on 0 size darrays."
