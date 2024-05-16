@@ -61,10 +61,9 @@ error:
 
 /*
 - adds 300 new element slots to `array` via `DArray_resize()`
-- fills the first 301 bytes that `array->contents + old_max`
-points to with zeroes
-- `array->contents + old_max` results in???
-    - TODO
+- fills the last 301 bytes (e) that the new array 300 array slots
+occupy with zeroes
+- extra 1 byte is a null byte to terminate the array / pointer
 */
 int DArray_expand(DArray *array)
 {
