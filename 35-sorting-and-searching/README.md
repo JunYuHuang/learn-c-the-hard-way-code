@@ -13,7 +13,7 @@
       - see https://github.com/zedshaw/liblcthw/pull/22
       - install `libbsd-dev` package on my WSL Ubuntu
       - update `Makefile` to match https://github.com/zedshaw/liblcthw/blob/master/Makefile
-  - `RMElement`?
+  - `RMElement`: RadixMap Element; i.e. a key-value pair
   - radix sort?
 
 ## How To Improve It

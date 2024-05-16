@@ -6,6 +6,17 @@ typedef enum {
     TYPE_STRING
 } VariantType;
 
+/*
+You find this in many implementations of dynamic languages. The
+language will define some base variant type with tags for all the
+base types of the language, and then usually there's a generic
+object tag for the types you can create. The advantage of doing
+this is that the `Variant` only takes up as much space as the
+`VariantType type` tag and the largest member of the union. This is
+because C is layering each element of the `Variant.data` union
+together, so they overlap. To do that, C sizes the union big enough
+to hold the largest element.
+*/
 struct Variant {
     VariantType type;
     union {

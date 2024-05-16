@@ -1,6 +1,15 @@
 #include "minunit.h"
 #include <lcthw/darray_algos.h>
 
+/*
+The thing to notice, and actually what tripped me up for a whole day, is the definition of `testcmp` on line 4. You have to use a
+`char **` and not a `char *` because `qsort` gives you a pointer to
+the pointers in the `contents` array. The function `qsort` and
+friends are scanning the array, and handing pointers to each element
+in the array to your comparison function. Since what I have in the
+`contents` array are pointers, that means you get a pointer to a
+pointer.
+*/
 int testcmp(char **a, char **b)
 {
     return strcmp(*a, *b);

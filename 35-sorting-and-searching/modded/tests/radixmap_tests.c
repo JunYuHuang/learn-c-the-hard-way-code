@@ -2,6 +2,12 @@
 #include <lcthw/radixmap.h>
 #include <time.h>
 
+/*
+I shouldn't have to explain too much about the test. It's simply
+simulating placing random integers into the `RadixMap`, and then
+making sure it can get them out reliably. Not too interesting.
+*/
+
 static int make_random(RadixMap *map)
 {
     size_t i = 0;
