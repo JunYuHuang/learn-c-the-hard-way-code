@@ -45,7 +45,7 @@ An exercise is complete when:
 - [x] Exercise 33: Linked List Algorithms
 - [x] Exercise 34: Dynamic Array
 - [x] Exercise 35: Sorting and Searching
-- [ ] Exercise 36: Safer Strings
+- [x] Exercise 36: Safer Strings
 - [ ] Exercise 37: Hashmaps
 - [ ] Exercise 38: Hashmap Algorithms
 - [ ] Exercise 39: String Algorithms
