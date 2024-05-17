@@ -3,6 +3,13 @@
 #include <assert.h>
 #include <lcthw/bstrlib.h>
 
+/*
+The only thing to learn about this unit test is that at the top I
+use a feature of `bstring` to create static strings to work within
+the tests. I use the `tagbstring` and `bsStatic` to create them on
+lines 7-13.
+*/
+
 Hashmap *map = NULL;
 static int traverse_called = 0;
 struct tagbstring test1 = bsStatic("test data 1");

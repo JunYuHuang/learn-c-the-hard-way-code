@@ -4,11 +4,28 @@
 #include <lcthw/dbg.h>
 #include <lcthw/bstrlib.h>
 
+/*
+There's nothing very complicated in the implementation, but the
+`default_hash` and `Hashmap_find_bucket` functions will need some
+explanation. When you use `Hashmap_create`, you can pass in any
+compare and hash functions you want, but if you don't, it uses the
+`default_compare` and `default_hash` functions.
+*/
+
 static int default_compare(void *a, void *b)
 {
     return bstrcmp((bstring) a, (bstring) b);
 }
 
+/*
+The first thing to look at is how `default_hash` does its thing.
+This is a simple hash function called a Jenkins hash after Bob
+Jenkins. I got the algorithm from the "Jenkins hash" page on
+Wikipedia. It simply goes through each byte of the key to hash (a
+bstring), and then it works the bits so that the end result is a
+single `uint32_t`. It does this with some adding and exclusive or
+(XOR) operations.
+*/
 /**
  * Simple Bob Jenkins's hash algorithm taken from the
  * wikipedia description.
@@ -96,6 +113,31 @@ error:
     return NULL;
 }
 
+/*
+There are many different hash functions, all with different
+properties, but once you have one, you need a way to use it to find
+the right buckets. The `Hashmap_find_bucket` does it like this:
+
+- First, it calls `map->hash(key)` to get the hash for the key.
+- It then finds the bucket using `hash % DEFAULT_NUMBER_OF_BUCKETS`,
+  so every hash will always find some bucket no matter how big it is.
+- It then gets the bucket, which is also a `DArray`, and if it's not
+  there, it will create the bucket. However, that depends on if the
+`create` variable says to do so.
+- Once it has found the `DArray` bucket for the right hash, it
+  returns it, and the `hash_out` variable is used to give the caller
+  the hash that was found.
+
+All of the other functions then use `Hashmap_find_bucket` to do
+their work:
+
+- Setting a key/value involves finding the bucket, making a
+  `HashmapNode`, and then adding it to the bucket.
+- Getting a key involves finding the bucket, and then finding the
+  `HashmapNode` that matches the `hash` and `key` that you want.
+- Deleting an item finds the bucket, finds where the requested node
+  is, and then removes it by swapping the last node into its place.
+*/
 static inline DArray *Hashmap_find_bucket(
     Hashmap *map, void *key, int create, uint32_t *hash_out
 )
@@ -180,6 +222,12 @@ error:          // fallthrough
     return NULL;
 }
 
+/*
+The only other function that you should study is the
+`Hashmap_traverse`. This simply walks through every bucket, and for
+any bucket that has possible values, it calls the `traverse_cb` on
+each value. This is how you scan a whole `Hashmap` for its values.
+*/
 int Hashmap_traverse(Hashmap *map, Hashmap_traverse_cb traverse_cb)
 {
     int i = 0;

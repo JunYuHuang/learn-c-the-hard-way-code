@@ -5,6 +5,9 @@
 - TODO
 - misc
   - add code comments to `./modded`
+    - [x] `/src/lcthw/hashmap.h`
+    - [x] `/src/lcthw/hashmap.c`
+    - [x] `/tests/hashmap_tests.c`
 
 ## How To Improve It
 
