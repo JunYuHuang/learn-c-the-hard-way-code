@@ -2,7 +2,13 @@
 
 ## Notes
 
-- TODO
+- radix sort: a weird sorting algorithm for educational value
+  - only good for
+    - 1 map of int set to another
+    - 1 map of int set to a pointer
+  - `RMElement`: RadixMap Element; i.e. a key-value pair
+  - `RadixMap_find()`: uses binary search
+- separate asserts / checks from load / set-up code in functions
 - misc
   - get copy and pasted code working (fixed now)
     - problem:
@@ -13,8 +19,6 @@
       - see https://github.com/zedshaw/liblcthw/pull/22
       - install `libbsd-dev` package on my WSL Ubuntu
       - update `Makefile` to match https://github.com/zedshaw/liblcthw/blob/master/Makefile
-  - `RMElement`: RadixMap Element; i.e. a key-value pair
-  - radix sort?
 
 ## How To Improve It
 

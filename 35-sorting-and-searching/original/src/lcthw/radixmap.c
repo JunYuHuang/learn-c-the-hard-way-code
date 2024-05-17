@@ -10,13 +10,13 @@
 
 RadixMap *RadixMap_create(size_t max)
 {
-    RadixMap *map = calloc(sizeof(RadixMap), 1);
+    RadixMap *map = calloc(1, sizeof(RadixMap));
     check_mem(map);
 
-    map->contents = calloc(sizeof(RMElement), max + 1);
+    map->contents = calloc(max + 1, sizeof(RMElement));
     check_mem(map->contents);
 
-    map->temp = calloc(sizeof(RMElement), max + 1);
+    map->temp = calloc(max + 1, sizeof(RMElement));
     check_mem(map->temp);
 
     map->max = max;
@@ -24,6 +24,7 @@ RadixMap *RadixMap_create(size_t max)
 
     return map;
 error:
+    if (map) RadixMap_destroy(map);
     return NULL;
 }
 
@@ -82,6 +83,9 @@ void RadixMap_sort(RadixMap * map)
 
 RMElement *RadixMap_find(RadixMap * map, uint32_t to_find)
 {
+    check(map != NULL, "Invalid map.");
+    check(map->contents != NULL, "Invalid map contents in radixmap.");
+
     int low = 0;
     int high = map->end - 1;
     RMElement *data = map->contents;
@@ -99,6 +103,7 @@ RMElement *RadixMap_find(RadixMap * map, uint32_t to_find)
         }
     }
 
+error:  // fallthrough
     return NULL;
 }
 
