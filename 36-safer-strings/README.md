@@ -2,14 +2,28 @@
 
 ## Notes
 
-- TODO
+- C strings suck
+  - impossible to safely process them
+  - easy to exploit
+- bstring: a 3rd party, better string library
+  - `bstring` is an alias for:
+    ```c
+    struct tagbstring {
+        int mlen;
+        int slen;
+        unsigned char *data;
+    };
+    ```
+- misc
+  - `vstr`: another 3rd party string library
+  - mostly avoid using `str`- built-in string functions
 
 ## Learning The Library
 
-Write my own tests for `bstrlib.c` in `tests/bstr_tests.c` for the following functions:
+Write tests `tests/bstr_tests.c` for these functions in `bstrlib.c`:
 
-- [ ] 1. `bfromcstr`: Create a bstring from a C style constant.
-  - TODO
+- [x] 1. `bfromcstr`: Create a bstring from a C style constant.
+  - See `./mine`
 - [ ] 2. `blk2bstr`: Do the same thing, but give the length of the buffer.
   - TODO
 - [ ] 3. `bstrcpy`: Copy a bstring.
