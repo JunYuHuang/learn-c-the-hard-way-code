@@ -47,7 +47,7 @@ An exercise is complete when:
 - [x] Exercise 35: Sorting and Searching
 - [x] Exercise 36: Safer Strings
 - [x] Exercise 37: Hashmaps
-- [ ] Exercise 38: Hashmap Algorithms
+- [x] Exercise 38: Hashmap Algorithms
 - [ ] Exercise 39: String Algorithms
 - [ ] Exercise 40: Binary Search Trees
 - [ ] Exercise 41: Project `devpkg`

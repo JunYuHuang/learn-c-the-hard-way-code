@@ -56,7 +56,11 @@ char *test_djb()
 }
 
 /*
-I have the number of `BUCKETS` in this code set fairly high, since I have a fast enough computer, but if it runs slow, just lower them and `NUM_KEYS`. What this test lets me do is run the test, and then look at the distribution of keys for each hash function using a bit of analysis with a language called R.
+I have the number of `BUCKETS` in this code set fairly high, since I
+have a fast enough computer, but if it runs slow, just lower them
+and `NUM_KEYS`. What this test lets me do is run the test, and then
+look at the distribution of keys for each hash function using a bit
+of analysis with a language called R.
 */
 #define BUCKETS 100
 #define BUFFER_LEN 20
@@ -64,7 +68,13 @@ I have the number of `BUCKETS` in this code set fairly high, since I have a fast
 enum { ALGO_FNV1A, ALGO_ADLER32, ALGO_DJB };
 
 /*
-I do this by crafting a big list of keys using the `gen_keys` function. These keys are taken out of the `/dev/urandom` device and are random byte keys. I then use these keys to have the `fill_distribution` function fill up the `stats` array with where those keys would hash in a theoretical set of buckets. All this function does is go through all of the keys, do the hash, then do what the `Hashmap` would do to find its bucket.
+I do this by crafting a big list of keys using the `gen_keys`
+function. These keys are taken out of the `/dev/urandom` device and
+are random byte keys. I then use these keys to have the
+`fill_distribution` function fill up the `stats` array with where
+those keys would hash in a theoretical set of buckets. All this
+function does is go through all of the keys, do the hash, then do
+what the `Hashmap` would do to find its bucket.
 */
 int gen_keys(DArray * keys, int num_keys)
 {

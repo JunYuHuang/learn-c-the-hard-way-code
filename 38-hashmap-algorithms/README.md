@@ -2,9 +2,23 @@
 
 ## Notes
 
-- TODOs
-  - watch video
-  - read and takes notes from text reading
+- hashing algorithms
+  - converts a string into a big non-negative integer
+  - may or may not be cryptographically secure
+  - rules of thumb for a good hash function
+    - has a 1000 mean for making 1000 keys per bucket
+    - a tight of a range between its min and max as possible
+- code review tips
+  - if updated a function, must update all its references
+    - can use these tools to help:
+      - `cscope`
+      - `ack`: like a super fast `grep` for code
+  - use `git` commands to help find changes
+    - `git status`
+    - `git diff`
+- misc
+  - `/dev/urandom`: Linux file when read returns random bytes
+    - bytes are pseudo-randomly generated (RNG)
 
 ## Extra Credit
 

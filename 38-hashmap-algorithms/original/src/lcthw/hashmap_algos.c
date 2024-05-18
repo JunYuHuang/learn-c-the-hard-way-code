@@ -1,5 +1,6 @@
 #include <lcthw/hashmap_algos.h>
 #include <lcthw/bstrlib.h>
+#include <lcthw/dbg.h>
 
 // settings taken from
 // http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-param
@@ -38,6 +39,8 @@ uint32_t Hashmap_adler32_hash(void *data)
 
 uint32_t Hashmap_djb_hash(void *data)
 {
+    check(data != NULL, "Invalid data to hash.");
+
     bstring s = (bstring) data;
     uint32_t hash = 5381;
     int i = 0;
@@ -47,4 +50,6 @@ uint32_t Hashmap_djb_hash(void *data)
     }
 
     return hash;
+error:
+    return 0;
 }
