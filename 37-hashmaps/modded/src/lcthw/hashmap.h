@@ -16,7 +16,7 @@ typedef int (*Hashmap_compare) (void *a, void *b);
 
 /*
 - This is the hashing function, and it's responsible for taking a
-  key , processing its contents, and producing a single `uint32_t`
+  key, processing its contents, and producing a single `uint32_t`
   index number. You'll see the default one soon.
 */
 typedef uint32_t (*Hashmap_hash) (void *key);
@@ -49,7 +49,7 @@ typedef struct Hashmap {
 The `HashmapNode` is then composed of these three elements:
 
 - `void *key`: The key for this key=value pair.
-- `void *value`: The value.
+- `void *data`: The value.
 - `uint32_t hash`: The calculated hash, which makes finding this
   node quicker. We can just check the hash and skip any that don't
   match, only checking the key if it's equal.

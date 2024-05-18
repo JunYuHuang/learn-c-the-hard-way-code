@@ -60,8 +60,8 @@ Hashmap *Hashmap_create(Hashmap_compare compare, Hashmap_hash hash)
     map->buckets = DArray_create(
         sizeof(DArray *), DEFAULT_NUMBER_OF_BUCKETS
     );
-    map->buckets->end = map->buckets->max;  // fake out expanding it
     check_mem(map->buckets);
+    map->buckets->end = map->buckets->max;  // fake out expanding it
 
     return map;
 
@@ -142,6 +142,8 @@ static inline DArray *Hashmap_find_bucket(
     Hashmap *map, void *key, int create, uint32_t *hash_out
 )
 {
+    check(map != NULL, "Invalid map given.");
+
     uint32_t hash = map->hash(key);
     int bucket_n = hash % DEFAULT_NUMBER_OF_BUCKETS;
     check(bucket_n >= 0, "Invalid bucket found: %d", bucket_n);
@@ -187,6 +189,8 @@ static inline int Hashmap_get_node(
 )
 {
     int i = 0;
+    check(map != NULL, "Invalid map.");
+    check(bucket != NULL, "Invalid bucket.");
 
     for (i = 0; i < DArray_end(bucket); i++) {
         debug("TRY: %d", i);
@@ -199,6 +203,7 @@ static inline int Hashmap_get_node(
         }
     }
 
+error:  // fallthrough
     return -1;
 }
 
