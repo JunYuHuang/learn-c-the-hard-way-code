@@ -2,15 +2,28 @@
 
 ## Notes
 
-- a
+- formal code review process / steps
+  1. start at a changed code part's entry point
+  2. verify each function's calling params are right
+  3. enter & verify each function's body code is right (line-by-line)
+  4. repeat up to step 2 for each function
+  5. confirm return values and their usage when exiting functions
+  6. confirm any missed calls to changed functions
+- code review key points
+  - check pointer derefs & defend against `NULL`
+  - check `if-statments` and `while-loops` for exiting
+  - check if return values will be valid
+  - check if allocated memory and other resources are freed
+  - confirm all system call params are right via `man` pages
+- consider recording your own code review
+  - what if I tracked and studied my code reviews?
+  - code review: like watching yourself code as a neutral 3rd party
+  - many compile errors: means I'm not doing well
+  - untested code
 - misc
-  - `ssize_t` data type: todo
+  - `ssize_t`: `size_t` data but signed; i.e. allows negative ints
   - Boyer-Moore-Horspool (BMH) algorithm: a string search algorithm
-- todos
-  - [x] get copy and pasted code compiling
-  - [x] type-copy the source code into `./modded`
-  - [x] add comments to the code in `./modded`
-  - [ ] add notes from text to [here](#notes)
+  - study / analyse stuff
 
 ## Extra Credit
 

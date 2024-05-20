@@ -48,7 +48,7 @@ An exercise is complete when:
 - [x] Exercise 36: Safer Strings
 - [x] Exercise 37: Hashmaps
 - [x] Exercise 38: Hashmap Algorithms
-- [ ] Exercise 39: String Algorithms
+- [x] Exercise 39: String Algorithms
 - [ ] Exercise 40: Binary Search Trees
 - [ ] Exercise 41: Project `devpkg`
 - [ ] Exercise 42: Stacks and Queues
