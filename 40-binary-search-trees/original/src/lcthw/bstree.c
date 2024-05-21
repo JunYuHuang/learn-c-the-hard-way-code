@@ -124,6 +124,7 @@ static inline int BSTree_traverse_nodes(BSTreeNode * node,
         BSTree_traverse_cb traverse_cb)
 {
     int rc = 0;
+    check(node != NULL, "Invalid node.");
 
     if (node->left) {
         rc = BSTree_traverse_nodes(node->left, traverse_cb);
@@ -138,15 +139,22 @@ static inline int BSTree_traverse_nodes(BSTreeNode * node,
     }
 
     return traverse_cb(node);
+
+error:
+    return -1;
 }
 
 int BSTree_traverse(BSTree * map, BSTree_traverse_cb traverse_cb)
 {
+    check(map != NULL, "Invalid map.");
     if (map->root) {
         return BSTree_traverse_nodes(map->root, traverse_cb);
+    } else {
+        return 0;
     }
 
-    return 0;
+error:
+    return -1;
 }
 
 static inline BSTreeNode *BSTree_find_min(BSTreeNode * node)

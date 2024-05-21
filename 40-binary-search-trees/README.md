@@ -2,7 +2,22 @@
 
 ## Notes
 
-- TODO
+- BSTs: an alt for hashmaps
+  - like a triple linked list
+  - double linked list is like a tree with 1 trunk
+  - is a binary tree with a unique property:
+    - for every node `n` in the tree,
+      - `n.left.value` <= `n.right.value` and recursively
+  - pros
+    - fast insert
+    - fast search
+  - cons
+    - hard to balance
+    - hard to delete
+  - traversal: DFS vs BFS
+- misc
+  - VOD review my recorded code review sessions to improve fast
+  - BSTs recursive traversal can be broken via data that cause a stack overflow
 
 ## Extra Credit
 

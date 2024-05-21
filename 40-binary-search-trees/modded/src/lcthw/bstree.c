@@ -54,6 +54,24 @@ error:
     return NULL;
 }
 
+/*
+Next, go look at `BSTree_set` and `BSTree_setnode` to see the exact
+same pattern. I use `BSTree_set` to configure the initial conditions
+and edge cases. A common edge case is that there's no root node, so
+I have to make one to get things started.
+
+This pattern will work with nearly any recursive algorithm you have to figure out. The way I do it is by following this pattern:
+
+- Figure out the initial variables, how they change, and what the
+  stopping conditions are for each recursive step.
+- Write a recursive function that calls itself, and has arguments
+  for each stopping condition and initial variable.
+- Write a setup function to set initial starting conditions for the
+  algorithm and handle edge cases, then have it call the recursive
+  function.
+- Finally, the setup function returns the final result, and possibly
+  alters it if the recursive function can't handle final edge cases.
+*/
 static inline void BSTree_setnode(
     BSTree *map, BSTreeNode *node, void *key, void *data
 )
@@ -75,24 +93,6 @@ static inline void BSTree_setnode(
     }
 }
 
-/*
-Next, go look at `BSTree_set` and `BSTree_setnode` to see the exact
-same pattern. I use `BSTree_set` to configure the initial conditions
-and edge cases. A common edge case is that there's no root node, so
-I have to make one to get things started.
-
-This pattern will work with nearly any recursive algorithm you have to figure out. The way I do it is by following this pattern:
-
-- Figure out the initial variables, how they change, and what the
-  stopping conditions are for each recursive step.
-- Write a recursive function that calls itself, and has arguments
-  for each stopping condition and initial variable.
-- Write a setup function to set initial starting conditions for the
-  algorithm and handle edge cases, then have it call the recursive
-  function.
-- Finally, the setup function returns the final result, and possibly
-  alters it if the recursive function can't handle final edge cases.
-*/
 int BSTree_set(BSTree *map, void *key, void *data)
 {
     if (map->root == NULL) {
@@ -108,6 +108,45 @@ error:
     return -1;
 }
 
+/*
+Before getting into how `BSTree_delete` works, I want to explain a
+pattern for doing recursive function calls in a sane way. You'll
+find that many tree-based data structures are easy to write if you
+use recursion, but formulate a single recursive function. Part of
+the problem is that you need to set up some initial data for the
+first operation, then recurse into the data structure, which is hard
+to do with one function.
+
+The solution is to use two functions: One function sets up the data
+structure and initial recursion conditions so that a second function
+can do the real work. Take a look at `BSTree_get` first to see what
+I mean.
+
+- I have an initial condition: If `map->root` is `NULL`, then return
+  `NULL` and don't recurse.
+- I then setup a call to the real recursion, which is in
+  `BSTree_getnode`. I create the initial condition of the root node
+  to start with the key and then the `map`.
+- In the `BSTree_getnode`, I then do the actual recursive logic. I
+  compare the keys with `map->compare(node->key, key)` and go left,
+  right, or equal to depending on the results.
+- Since this function is self-similar and doesn't have to handle any
+  initial conditions (because `BSTree_get` did), then I can
+  structure it very simply. When it's done, it returns to the
+  caller, and that return then comes back to `BSTree_get` for the
+  result.
+- At the end, the `BSTree_get` handles getting the `node.data`
+  element but only if the result isn't `NULL`.
+
+This way of structuring a recursive algorithm matches the way I
+structure my recursive data structures. I have an initial base
+function that handles initial conditions and some edge cases and
+then it calls a clean recursive function that does the work. Compare
+that with how I have a base structure in `BSTree` combined with
+recursive `BSTreeNode` structures, which all reference each other in
+a tree. Using this pattern makes it easy to deal with recursion and
+keep it straight.
+*/
 static inline BSTreeNode *BSTree_getnode(
     BSTree *map, BSTreeNode *node, void *key
 )
@@ -131,36 +170,6 @@ static inline BSTreeNode *BSTree_getnode(
     }
 }
 
-/*
-Before getting into how `BSTree_delete` works, I want to explain a pattern for doing recursive function calls in a sane way. You'll find that many tree-based data structures are easy to write if you use recursion, but forumlate a single recursive function. Part of the problem is that you need to set up some initial data for the first operation, then recurse into the data structure, which is hard to do with one function.
-
-The solution is to use two functions: One function sets up the data structure and initial recursion conditions so that a second function can do the real work. Take a look at `BSTree_get` first to see what I mean.
-
-- I have an initial condition: If `map->root` is `NULL`, then return
-  `NULL` and don't recurse.
-- I then setup a call to the real recursion, which is in
-  `BSTree_getnode`. I create the initial condition of the root node
-  to start with the key and then the `map`.
-- In the `BSTree_getnode`, I then do the actual recursive logic. I
-  compare the keys with `map->compare(node->key, key)` and go left,
-  right, or equal to depending on the results.
-- Since this function is self-similar and doesn't have to handle any
-  initial conditions (because `BSTree_get` did), then I can
-  structure it very simply. When it's done, it returns to the
-  caller, and that return then comes back to `BSTree_get` for the
-  result.
-- At the end, the `BSTree_get` handles getting the `node.data`
-  element but only if the result isn't `NULL`.
-
-This way of structuring a recursive algorithm matches the way I
-structure my recursive data structures. I have an initial base
-function that handles initial conditions and some edge cases and
-then it calls a clean recursive function that does the work. Compare
-that with how I have a base structure in `BStree` combined with
-recursive `BSTreeNode` structures, which all reference each other in
-a tree. Using this pattern makes it easy to deal with recursion and
-keep it straight.
-*/
 void *BSTree_get(BSTree *map, void *key)
 {
     if (map->root == NULL) {
@@ -176,6 +185,7 @@ static inline int BSTree_traverse_nodes(
 )
 {
     int rc = 0;
+    check(node != NULL, "Invalid node.");
 
     if (node->left) {
         rc = BSTree_traverse_nodes(node->left, traverse_cb);
@@ -190,17 +200,24 @@ static inline int BSTree_traverse_nodes(
     }
 
     return traverse_cb(node);
+
+error:
+    return -1;
 }
 
 int BSTree_traverse(
     BSTree *map, BSTree_traverse_cb traverse_cb
 )
 {
+    check(map != NULL, "Invalid map.");
     if (map->root) {
         return BSTree_traverse_nodes(map->root, traverse_cb);
+    } else {
+        return 0;
     }
 
-    return 0;
+error:
+    return -1;
 }
 
 static inline BSTreeNode *BSTree_find_min(BSTreeNode *node)
@@ -272,7 +289,7 @@ static inline BSTreeNode *BSTree_node_delete(
     /*
     This is the usual less-than branch to use when I want to go
     left. I'm handling the case that left doesn't exist here,
-    and returning `NULL` to say "not found." This covers
+    and returning `NULL` to say "not found". This covers
     deleting something that isn't in the `BSTree`.
     */
     if (cmp < 0) {
@@ -300,7 +317,7 @@ static inline BSTreeNode *BSTree_node_delete(
 
     /*
     This is where I have found the node, since the key is equal
-    (`compare` return 0).
+    (`compare` returns 0).
     */
     else {
 
@@ -312,7 +329,7 @@ static inline BSTreeNode *BSTree_node_delete(
 
             /*
             To remove this node, I first need to find the smallest
-            note that's greater than this node, which means I call
+            node that's greater than this node, which means I call
             `BSTree_find_min` on the right child.
             */
             // swap this node for the smallest node that is bigger
@@ -390,7 +407,7 @@ static inline BSTreeNode *BSTree_node_delete(
         }
 
         /*
-        After all that, I have the curernt node rotated out of the
+        After all that, I have the current node rotated out of the
         tree and replaced with some child element that will fit in
         the tree. I just return this to the caller so it can be freed
         and managed.

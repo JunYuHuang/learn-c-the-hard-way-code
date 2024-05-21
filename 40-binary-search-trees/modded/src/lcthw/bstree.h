@@ -36,10 +36,9 @@ same thing, except you're looking for where to put a new node:
 - If there is no `BSTree.root`, then I just make it and we're done.
   That's the first node.
 - After that, I compare your key to `node.key`, starting at the root.
-
 - If your key is less than or equal to the `node.key`, then I want
-  to go left. If your key is greater than and not equal to the `node.
-  key`, then I want to go right.
+  to go left. If your key is greater than and not equal to the
+  `node.key`, then I want to go right.
 - I keep repeating step 3 until I reach a node where left or right
   doesn't exist, but that's the direction I need to go.
 - Once there, I set that direction (left or right) to a new node for
