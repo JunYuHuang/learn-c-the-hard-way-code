@@ -3,11 +3,6 @@
 ## Notes
 
 - TODO
-- todos
-  - [x] get copy and pasted code compiled and running
-  - [x] type-copy the code to `./modded`
-  - [ ] add code comments to `./modded`
-    - WIP: continue from code comments on `bstree.c:199-205`
 
 ## Extra Credit
 

@@ -269,51 +269,132 @@ static inline BSTreeNode *BSTree_node_delete(
     */
     int cmp = map->compare(node->key, key);
 
+    /*
+    This is the usual less-than branch to use when I want to go
+    left. I'm handling the case that left doesn't exist here,
+    and returning `NULL` to say "not found." This covers
+    deleting something that isn't in the `BSTree`.
+    */
     if (cmp < 0) {
-
-        /*
-        This is the usual less-than branch to use when I want to go
-        left. I'm handling the case that left doesn't exist here,
-        and returning `NULL` to say "not found." This covers
-        deleting something that isn't in the `BSTree`.
-        */
         if (node->left) {
             return BSTree_node_delete(map, node->left, key);
         } else {
             // not found
             return NULL;
         }
-    } else if (cmp > 0) {
+    }
+
+    /*
+    This is the same thing but for the right branch of the tree.
+    Just keep recursing down into the tree just like in the
+    other functions, and return `NULL` if it doesn't exist.
+    */
+    else if (cmp > 0) {
         if (node->right) {
             return BSTree_node_delete(map, node->right, key);
         } else {
             // not found
             return NULL;
         }
-    } else {
+    }
+
+    /*
+    This is where I have found the node, since the key is equal
+    (`compare` return 0).
+    */
+    else {
+
+        /*
+        This node has both a `left` and `right` branch, so it's
+        deeply embedded in the tree.
+        */
         if (node->left && node->right) {
+
+            /*
+            To remove this node, I first need to find the smallest
+            note that's greater than this node, which means I call
+            `BSTree_find_min` on the right child.
+            */
             // swap this node for the smallest node that is bigger
             // than us
             BSTreeNode *successor = BSTree_find_min(node->right);
+
+            /*
+            Once I have this node, I'll swap its `key` and `data`
+            with the current node's values. This will effectively
+            take this node which was down at the bottom of the tree,
+            and put its contents here, so that I don't have to try
+            and shuffle the node out by its pointers.
+            */
             BSTree_swap(successor, node);
 
+            /*
+            The `successor` is now this dead branch that has the
+            current node's values. It could just be removed, but
+            there's a chance that it has a right node value. This
+            means I need to do a single rotate so that the
+            successor's right node gets moved up to completely detach
+            it.
+            */
             // this leaves the old successor with possibly a right
             // child so replace it with that right child
             BSTree_replace_node_in_parent(
                 map, successor, successor->right
             );
 
+            /*
+            At this point, the successor is removed from the tree,
+            its values are replaced the current node's values, and
+            any children it had are moved up into the parent. I can
+            return the `successor` as if it were the `node`.
+            */
             // finally it's swapped, so return successor instead of
             // node
             return successor;
-        } else if (node->left) {
+        }
+
+        /*
+        At this branch, I know that the node has a left but no right,
+        so I want to replace this node with its left child.
+        */
+        else if (node->left) {
+
+            /*
+            I again use `BSTree_replace_node_in_parent` to do the
+            replace, rotating the left child up.
+            */
             BSTree_replace_node_in_parent(map, node, node->left);
-        } else if (node->right) {
+        }
+
+        /*
+        This branch of the `if-statement` means I have a right child
+        but no left child, so I want to rotate the right child up.
+        */
+        else if (node->right) {
+
+            /*
+            Again, I use the function to do the rotate, but this
+            time, rotate the right node.
+            */
             BSTree_replace_node_in_parent(map, node, node->right);
-        } else {
+        }
+
+        /*
+        Finally, the only thing that's left is the condition where
+        I've found the node, and it has no children (no left or
+        right). In this case, I simply replace this node with `NULL`
+        by using the same function I did with all of the others.
+        */
+        else {
             BSTree_replace_node_in_parent(map, node, NULL);
         }
 
+        /*
+        After all that, I have the curernt node rotated out of the
+        tree and replaced with some child element that will fit in
+        the tree. I just return this to the caller so it can be freed
+        and managed.
+        */
         return node;
     }
 }
