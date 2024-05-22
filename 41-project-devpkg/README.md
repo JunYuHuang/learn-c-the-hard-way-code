@@ -46,7 +46,7 @@
 # TODO
 ```
 
-## Starter Project TODOs
+## TODOs
 
 - [x] Create and write `./ex41.1.sh` file
 - [x] Run `./ex41.1.sh` to install `apr-1.5.2` and `apr-util-1.5.4`
@@ -60,16 +60,56 @@
   - [x] Copy `bstrlib.c` to `./devpkg/bstrlib.c`
   - [x] Run `make bstrlib.o` to create the `bstrlib.o` file
 - [x] Type-copy `./devpkg/Makefile`
+- [ ] Do Ubuntu-specific configs
+  - [x] Add `-D_LARGEFILE64_SOURCE=1` to `CFLAGS` in the `Makefile`
+  - [x] Copy `/usr/local/apr/lib` to `/etc/ld.config.so.d/` ??
+  - [x] Run `ldconfig` so it picks up the libraries ??
+  - [ ] Verify config worked
+- [x] Create and type-copy `./devpkg/db.h`
+- [x] Create and type-copy `./devpkg/db.c`
+- [ ] Create and type-copy `./devpkg/shell.h`
+- [ ] Create and type-copy `./devpkg/shell.c`
+- [ ] Create and type-copy `./devpkg/commands.h`
+- [ ] Create and type-copy `./devpkg/commands.c`
+- [ ] Create and type-copy `./devpkg/devpkg.c`
 - [ ] Run `make` in `./devpkg`
+
+## Challenges
+
+- [ ] Challenge 1: Code Review
+  - code review notes from exercise 39
+    - formal code review process / steps
+      1. start at a changed code part's entry point
+      2. verify each function's calling params are right
+      3. enter & verify each function's body code is right (line-by-line)
+      4. repeat up to step 2 for each function
+      5. confirm return values and their usage when exiting functions
+      6. confirm any missed calls to changed functions
+    - code review key points
+      - check pointer derefs & defend against `NULL`
+      - check `if-statments` and `while-loops` for exiting
+      - check if return values will be valid
+      - check if allocated memory and other resources are freed
+      - confirm all system call params are right via `man` pages
+  - notes
+    - `unistd.h`: a C header that gives POSIX OS API access
+- [ ] Challenge 2: Analyze Shell_exec
+  - TODO
+- [ ] Challenge 3: Critique My Design
+  - TODO
+- [ ] Challenge 4: The README and Test Files
+  - TODO
+- [ ] The Final Challenge
+  - [ ] 1. Compare your code to my code available online. Starting with 100%, remove 1% for each line you got wrong.
+    - TODO
+  - [ ] 2. Take the notes.txt file that you previously created and implement your improvements to the the code and functionality of `devpkg`.
+    - TODO
+  - [ ] 3. Write an alternative version of `devpkg` using your other favorite language or the one you think can do this the best. Compare the two, then improve your C version of `devpkg` based on what you've learned.
+    - TODO
 
 ## Notes
 
 - video notes
   - TODO
 - misc
-  - 10.5 min video
-
-## `devpkg` Tool Features
-
-- [ ] 1. TODO
-  - TODO
+  - todo
