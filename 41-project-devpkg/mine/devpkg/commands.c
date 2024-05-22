@@ -19,7 +19,7 @@ int Command_depends(apr_pool_t *p, const char *path)
     for (
         line = bgets((bNgetc) fgetc, in, '\n');
         line != NULL;
-        line = bgets((bNgetc) fgetc, in, '\n');
+        line = bgets((bNgetc) fgetc, in, '\n')
     ) {
         btrimws(line);
         log_info("Processing depends: %s", bdata(line));
