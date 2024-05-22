@@ -76,50 +76,64 @@
 
 ## Challenges
 
-- [ ] Challenge 1: Code Review
-  - code review notes from exercise 39
-    - formal code review process / steps
-      1. start at a changed code part's entry point
-      2. verify each function's calling params are right
-      3. enter & verify each function's body code is right (line-by-line)
-      4. repeat up to step 2 for each function
-      5. confirm return values and their usage when exiting functions
-      6. confirm any missed calls to changed functions
-    - code review key points
-      - check pointer derefs & defend against `NULL`
-      - check `if-statements` and `while-loops` for exiting
-      - check if return values will be valid
-      - check if allocated memory and other resources are freed
-      - confirm all system call params are right via `man` pages
-  - reviewed checklist
-    - [x] `db.h`
-    - [ ] `db.c`
-      - [x] `DB_open()`
-      - [x] `DB_close()`
-      - [x] `DB_load()`
-      - [ ] `DB_update()`
-      - TODO
-  - notes
-    - `unistd.h`: a C header that gives POSIX OS API access
-    - from `/apr` lib
-      - `apr_errno.h`: TODO
-      - `apr_file_io`: TODO
-    - from `/bstrlib` lib
-      - `bread()`: reads a stream into a bstring
-      - `bNRead`: a callback type (i.e. function pointer)
+- [x] Challenge 1: Code Review
 - [ ] Challenge 2: Analyze Shell_exec
-  - TODO
 - [ ] Challenge 3: Critique My Design
-  - TODO
 - [ ] Challenge 4: The README and Test Files
-  - TODO
-- [ ] The Final Challenge
-  - [ ] 1. Compare your code to my code available online. Starting with 100%, remove 1% for each line you got wrong.
-    - TODO
-  - [ ] 2. Take the notes.txt file that you previously created and implement your improvements to the the code and functionality of `devpkg`.
-    - TODO
-  - [ ] 3. Write an alternative version of `devpkg` using your other favorite language or the one you think can do this the best. Compare the two, then improve your C version of `devpkg` based on what you've learned.
-    - TODO
+- [ ] ~~Challenge 5: The Final Challenge~~ (skipped)
+
+## Challenges - Notes
+
+### Challenge 1 Notes
+
+- formal code review process / steps
+  1. start at a changed code part's entry point
+  2. verify each function's calling params are right
+  3. enter & verify each function's body code is right (line-by-line)
+  4. repeat up to step 2 for each function
+  5. confirm return values and their usage when exiting functions
+  6. confirm any missed calls to changed functions
+- code review key points
+  - check pointer derefs & defend against `NULL`
+  - check `if-statements` and `while-loops` for exiting
+  - check if return values will be valid
+  - check if allocated memory and other resources are freed
+  - confirm all system call params are right via `man` pages
+- reviewed checklist
+  - [x] `db.h`
+  - [x] `db.c`
+    - [x] `DB_open()`
+    - [x] `DB_close()`
+    - [x] `DB_load()`
+    - [x] `DB_update()`
+    - [x] `DB_find()`
+    - [x] `DB_init()`
+    - [x] `DB_list()`
+- `unistd.h`: a C header that gives POSIX OS API access
+  - `access()`
+- from `/apr` lib
+  - `apr_errno.h`
+    - `APR_SUCCESS`: a constant int
+    - `apr_status_t`: an int typedef
+  - `apr_file_io.h`
+    - includes `apr_file_info.h`
+      - `APR_UREAD`: a hexadecimal constant
+    - includes `apr_errno.h`
+    - `apr_dir_make_recursive()`
+  - `apr_pools.h`
+    - `apr_pool_t`: a struct typedef
+    - `apr_pool_initialize()`
+    - `apr_pool_create()`
+- from `/bstrlib` lib
+  - `bread()`: reads a stream into a bstring
+  - `bNRead`: a callback type (i.e. function pointer)
+  - `BSTR_ERR`: a constant int
+  - `BSTR_OK`: a constant int
+  - `bdestroy()`
+  - `bfromcstr()`
+  - `bconchar()`
+  - `blength()`
+  - `bdata()`
 
 ## Notes
 

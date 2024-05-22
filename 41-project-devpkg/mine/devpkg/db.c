@@ -49,8 +49,11 @@ error:
     return NULL;
 }
 
+// returns 0 on success or -1 on fail
 int DB_update(const char *url)
 {
+    check(url != NULL, "Invalid url.");
+
     if (DB_find(url)) {
         log_info("Already recorded as installed: %s", url);
     }
@@ -59,25 +62,37 @@ int DB_update(const char *url)
     check(db, "Failed to open DB file: %s", DB_FILE);
 
     bstring line = bfromcstr(url);
-    bconchar(line, '\n');
-    int rc = fwrite(line->data, blength(line), 1, db);
+    check(line != NULL, "Invalid url.");
+
+    int rc = 0;
+    rc = bconchar(line, '\n');
+    check(rc == BSTR_OK, "Failed to append a newline to line.");
+
+    rc = fwrite(line->data, blength(line), 1, db);
     check(rc == 1, "Failed to append to the db.");
 
     return 0;
 error:
     if (db)
         DB_close(db);
+    if (line)
+        bdestroy(line);
     return -1;
 }
 
+// bool function that returns 1 on success or 0 on fail
 int DB_find(const char *url)
 {
+    check(url != NULL, "Invalid url.");
+
     bstring data = NULL;
     bstring line = bfromcstr(url);
+    check(line != NULL, "Invalid url.");
+
     int res = -1;
 
     data = DB_load();
-    check(data, "Failed to load: %s", DB_FILE);
+    check(data != NULL, "Failed to load: %s", DB_FILE);
 
     if (binstr(data, 0, line) == BSTR_ERR) {
         res = 0;
@@ -94,14 +109,20 @@ error:          // fallthrough
     return res;
 }
 
+// returns 0 on success or -1 on fail
 int DB_init()
 {
     apr_pool_t *p = NULL;
-    apr_pool_initialize();
-    apr_pool_create(&p, NULL);
+
+    apr_status_t rc = -1;
+    rc = apr_pool_initialize();
+    check(rc == APR_SUCCESS, "Failed to initialize database.");
+
+    rc = apr_pool_create(&p, NULL);
+    check(rc == APR_SUCCESS, "Failed to create database.");
 
     if (access(DB_DIR, W_OK | X_OK) == -1) {
-        apr_status_t rc = apr_dir_make_recursive(
+        rc = apr_dir_make_recursive(
             DB_DIR,
             APR_UREAD |
             APR_UWRITE |
@@ -128,7 +149,8 @@ int DB_init()
     return 0;
 
 error:
-    apr_pool_destroy(p);
+    if (p)
+        apr_pool_destroy(p);
     return -1;
 }
 
@@ -142,5 +164,7 @@ int DB_list()
     return 0;
 
 error:
+    if (data)
+        bdestroy(data);
     return -1;
 }
