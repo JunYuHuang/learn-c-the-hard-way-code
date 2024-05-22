@@ -82,9 +82,9 @@
 - [ ] Challenge 4: The README and Test Files
 - [ ] ~~Challenge 5: The Final Challenge~~ (skipped)
 
-## Challenges - Notes
+## Notes For Challenges
 
-### Challenge 1 Notes
+### Notes For Challenge 1: Code Review
 
 - formal code review process / steps
   1. start at a changed code part's entry point
@@ -134,6 +134,29 @@
   - `bconchar()`
   - `blength()`
   - `bdata()`
+
+## Notes For Challenge 2: Analyze Shell_exec
+
+- TODO
+- code review checklist
+  - [x] `shell.h`
+  - [ ] `shell.c`
+    - [ ] `Shell_exec()`
+    - [ ] `Shell_run()`
+    - [ ] `CLEANUP_SH` struct
+    - [ ] `GIT_SH` struct
+    - [ ] `TAR_SH` struct
+    - [ ] `CURL_SH` struct
+    - [ ] `CONFIGURE_SH` struct
+    - [ ] `MAKE_SH` struct
+    - [ ] `INSTALL_SH` struct
+- tasks
+  - [ ] code review + revise both `shell.h` and `shell.c`
+  - [ ] study and add notes for how `Shell_exec()` works
+  - [ ] update the code
+    - [ ] add a `Shell` field that counts all var `args` to be replaced
+    - [ ] have error check to confirm all these args have been replaced
+    - [ ] error exit?
 
 ## Notes
 

@@ -1,7 +1,23 @@
+/*
+Read the `shell.c` from the bottom to the top (which is a common C
+source layout) and you see how I've created the actual `Shell
+`variables that you indicated were `extern` in `shell.h`. They live
+here, but are available to the rest of the program. This is how you
+make global variables that live in one `.o` file but are used
+everywhere. You shouldn't make many of these, but they are handy for
+things like this.
+*/
+
 #include "shell.h"
 #include "dbg.h"
 #include <stdarg.h>
 
+/*
+Finally, I have the `Shell_exec` function, which is a variable
+argument function. You've seen this before, but make sure you grasp
+the `stdarg.h` functions. In the challenge for this section, you're
+going to analyze this function.
+*/
 int Shell_exec(Shell template, ...)
 {
     apr_pool_t *p = NULL;
@@ -44,6 +60,17 @@ error:
     return rc;
 }
 
+/*
+Continuing up the file we get to the `Shell_run` function, which is
+a base function that just runs a command according to what's in a
+`Shell` struct. It uses many of the functions defined in
+`apr_thread_proc.h`, so go look up each one to see how the base
+function works. This seems like a lot of work compared to just using
+the `system` function call, but it also gives you more control over
+the other program's execution. For example, in our `Shell` struct,
+we have a `.dir` attribute that forces the program to be in a
+specific directory before running.
+*/
 int Shell_run(apr_pool_t *p, Shell *cmd)
 {
     apr_procattr_t *attr;
