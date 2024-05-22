@@ -67,11 +67,11 @@
   - [ ] Verify config worked
 - [x] Create and type-copy `./devpkg/db.h`
 - [x] Create and type-copy `./devpkg/db.c`
-- [ ] Create and type-copy `./devpkg/shell.h`
-- [ ] Create and type-copy `./devpkg/shell.c`
-- [ ] Create and type-copy `./devpkg/commands.h`
-- [ ] Create and type-copy `./devpkg/commands.c`
-- [ ] Create and type-copy `./devpkg/devpkg.c`
+- [x] Create and type-copy `./devpkg/shell.h`
+- [x] Create and type-copy `./devpkg/shell.c`
+- [x] Create and type-copy `./devpkg/commands.h`
+- [x] Create and type-copy `./devpkg/commands.c`
+- [x] Create and type-copy `./devpkg/devpkg.c`
 - [ ] Run `make` in `./devpkg`
 
 ## Challenges
@@ -87,12 +87,26 @@
       6. confirm any missed calls to changed functions
     - code review key points
       - check pointer derefs & defend against `NULL`
-      - check `if-statments` and `while-loops` for exiting
+      - check `if-statements` and `while-loops` for exiting
       - check if return values will be valid
       - check if allocated memory and other resources are freed
       - confirm all system call params are right via `man` pages
+  - reviewed checklist
+    - [x] `db.h`
+    - [ ] `db.c`
+      - [x] `DB_open()`
+      - [x] `DB_close()`
+      - [x] `DB_load()`
+      - [ ] `DB_update()`
+      - TODO
   - notes
     - `unistd.h`: a C header that gives POSIX OS API access
+    - from `/apr` lib
+      - `apr_errno.h`: TODO
+      - `apr_file_io`: TODO
+    - from `/bstrlib` lib
+      - `bread()`: reads a stream into a bstring
+      - `bNRead`: a callback type (i.e. function pointer)
 - [ ] Challenge 2: Analyze Shell_exec
   - TODO
 - [ ] Challenge 3: Critique My Design

@@ -8,12 +8,23 @@
 
 static FILE *DB_open(const char *path, const char *mode)
 {
+    check(path != NULL, "Invalid path.");
+    check(mode != NULL, "Invalid mode.");
+
     return fopen(path, mode);
+
+error:
+    return NULL;
 }
 
 static void DB_close(FILE *db)
 {
+    check(db != NULL, "Invalid db.");
+
     fclose(db);
+
+error:
+    return;
 }
 
 static bstring DB_load()
