@@ -77,7 +77,7 @@
 ## Challenges
 
 - [x] Challenge 1: Code Review
-- [ ] Challenge 2: Analyze Shell_exec
+- [x] Challenge 2: Analyze Shell_exec
 - [ ] Challenge 3: Critique My Design
 - [ ] Challenge 4: The README and Test Files
 - [ ] ~~Challenge 5: The Final Challenge~~ (skipped)
@@ -137,26 +137,44 @@
 
 ## Notes For Challenge 2: Analyze Shell_exec
 
-- TODO
+- tasks
+  - [x] code review both `shell.h` and `shell.c`
+  - [x] study and add notes for how `Shell_exec()` works
+  - [ ] ~~update the code~~ (skipped)
+    - [ ] ~~add a `Shell` field that counts all var `args` to be replaced~~
+    - [ ]~~ ~~have error check to confirm all these args have been replaced~~
+    - [ ] ~~error exit?~~
 - code review checklist
   - [x] `shell.h`
-  - [ ] `shell.c`
-    - [ ] `Shell_exec()`
-    - [ ] `Shell_run()`
-    - [ ] `CLEANUP_SH` struct
-    - [ ] `GIT_SH` struct
-    - [ ] `TAR_SH` struct
-    - [ ] `CURL_SH` struct
-    - [ ] `CONFIGURE_SH` struct
-    - [ ] `MAKE_SH` struct
-    - [ ] `INSTALL_SH` struct
-- tasks
-  - [ ] code review + revise both `shell.h` and `shell.c`
-  - [ ] study and add notes for how `Shell_exec()` works
-  - [ ] update the code
-    - [ ] add a `Shell` field that counts all var `args` to be replaced
-    - [ ] have error check to confirm all these args have been replaced
-    - [ ] error exit?
+  - [x] `shell.c`
+    - [x] `Shell_exec()`
+    - [x] `Shell_run()`
+    - [x] `CLEANUP_SH` struct
+    - [x] `GIT_SH` struct
+    - [x] `TAR_SH` struct
+    - [x] `CURL_SH` struct
+    - [x] `CONFIGURE_SH` struct
+    - [x] `MAKE_SH` struct
+    - [x] `INSTALL_SH` struct
+- code review notes
+  - from `/apr` lib
+    - `apr_thread_proc.h`
+      - `apr_procattr_t`: a struct typedef
+      - `apr_proc_t`: a struct typedef
+      - `apr_exit_why_e`: an enum
+      - `apr_procattr_create()`
+    - `apr_pools.h`
+      - `apr_pool_t`: a struct typedef
+    - `apr_errno.h`
+      - `apr_status_t`: an int typedef
+      - `APR_SUCCESS`: a macro var set to 0
+      - `APR_NO_PIPE`: a macro var set to 0
+  - from ANSI C standard
+    - `stdarg.h`: header lib for variadic functions
+- how `Shell_exec()` works
+  - `...`: a variadic length string array of elements in the order `[key0, arg0, ..., keyN, argN]`
+  - allows passing in optional key-value string pairs in `...` to customize the calling arguments `args` in the `template` `Shell` struct
+  - custom values in `...` replace the default values in `template`
 
 ## Notes
 

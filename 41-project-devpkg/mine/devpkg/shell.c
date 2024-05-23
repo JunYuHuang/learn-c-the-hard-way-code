@@ -73,12 +73,19 @@ specific directory before running.
 */
 int Shell_run(apr_pool_t *p, Shell *cmd)
 {
+    check(p != NULL, "Invalid pool.");
+    check(cmd != NULL, "Invalid command.");
+    check(cmd->dir != NULL, "Command dir cannot be NULL.");
+    check(cmd->exe != NULL, "Command exe cannot be NULL.");
+    check(cmd->args != NULL, "Command args cannot be NULL.");
+
     apr_procattr_t *attr;
     apr_status_t rv;
     apr_proc_t newproc;
 
     rv = apr_procattr_create(&attr, p);
     check(rv == APR_SUCCESS, "Failed to create proc attr.");
+    check(attr != NULL, "Proc attr should not be NULL.");
 
     rv = apr_procattr_io_set(
         attr, APR_NO_PIPE, APR_NO_PIPE, APR_NO_PIPE
@@ -111,18 +118,20 @@ int Shell_run(apr_pool_t *p, Shell *cmd)
     return 0;
 
 error:
+    if (p)
+        apr_pool_destroy(p);
     return -1;
 }
 
 Shell CLEANUP_SH = {
-    .exe = "rm",
     .dir = "/tmp",
+    .exe = "rm",
     .args = {
         "rm",
         "-rf",
         "/tmp/pkg-build",
         "/tmp/pkg-src.tar.gz",
-        "/temp/pkg-src.tar.bz2",
+        "/tmp/pkg-src.tar.bz2",
         "/tmp/DEPENDS",
         NULL
     }
@@ -149,19 +158,19 @@ Shell CURL_SH = {
 };
 
 Shell CONFIGURE_SH = {
-    .exe = "./configure",
     .dir = "/tmp/pkg-build",
+    .exe = "./configure",
     .args = { "configure", "OPTS", NULL }
 };
 
 Shell MAKE_SH = {
-    .exe = "make",
     .dir = "/tmp/pkg-build",
+    .exe = "make",
     .args = { "make", "OPTS", NULL }
 };
 
 Shell INSTALL_SH = {
-    .exe = "sudo",
     .dir = "/tmp/pkg-build",
+    .exe = "sudo",
     .args = { "sudo", "make", "TARGET", NULL }
 };
