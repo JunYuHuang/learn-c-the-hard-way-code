@@ -1,3 +1,4 @@
 Improvement Notes For `./commands.h` and `./commands.c`
 
-- todo
+- refactor `Command_fetch()` function
+    - split its nested `if-else-statements` branches into their own functions

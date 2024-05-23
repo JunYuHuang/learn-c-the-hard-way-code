@@ -80,7 +80,7 @@
 
 - [x] Challenge 1: Code Review
 - [x] Challenge 2: Analyze Shell_exec
-- [ ] Challenge 3: Critique My Design
+- [x] Challenge 3: Critique My Design
 - [ ] Challenge 4: The README and Test Files
 - [ ] ~~Challenge 5: The Final Challenge~~ (skipped)
 
@@ -139,6 +139,19 @@
 
 ## Notes For Challenge 2: Analyze Shell_exec
 
+- formal code review process / steps
+  1. start at a changed code part's entry point
+  2. verify each function's calling params are right
+  3. enter & verify each function's body code is right (line-by-line)
+  4. repeat up to step 2 for each function
+  5. confirm return values and their usage when exiting functions
+  6. confirm any missed calls to changed functions
+- code review key points
+  - check pointer derefs & defend against `NULL`
+  - check `if-statements` and `while-loops` for exiting
+  - check if return values will be valid
+  - check if allocated memory and other resources are freed
+  - confirm all system call params are right via `man` pages
 - tasks
   - [x] code review both `shell.h` and `shell.c`
   - [x] study and add notes for how `Shell_exec()` works
@@ -180,16 +193,29 @@
 
 ### Notes For Challenge 3: Critique My Design
 
+- formal code review process / steps
+  1. start at a changed code part's entry point
+  2. verify each function's calling params are right
+  3. enter & verify each function's body code is right (line-by-line)
+  4. repeat up to step 2 for each function
+  5. confirm return values and their usage when exiting functions
+  6. confirm any missed calls to changed functions
+- code review key points
+  - check pointer derefs & defend against `NULL`
+  - check `if-statements` and `while-loops` for exiting
+  - check if return values will be valid
+  - check if allocated memory and other resources are freed
+  - confirm all system call params are right via `man` pages
 - tasks
-  - [ ] code review both `commands.h` and `commands.c`
-  - [ ] add improvement notes to `./notes.txt`
+  - [x] code review both `commands.h` and `commands.c`
+  - [x] add improvement notes to `./notes.txt`
 - code review checklist
   - [x] `commands.h`
-  - [ ] `commands.c`
+  - [x] `commands.c`
     - [x] `Command_depends()`
-    - [ ] `Command_fetch()`
-    - [ ] `Command_build()`
-    - [ ] `Command_install()`
+    - [x] `Command_fetch()`
+    - [x] `Command_build()`
+    - [x] `Command_install()`
 - code review notes
   - from `/apr` lib
     - `apr_thread_proc.h`
@@ -205,7 +231,10 @@
       - `APR_NO_PIPE`: a macro var set to 0
   - from `/apr-util` lib
     - `apr_uri.h`
+      - `apr_uri_t`: a typedef struct
+      - `apr_uri_parse()`
     - `apr_fnmatch.h`
+      - `apr_fnmatch()`
   - `unistd.h`: a C header that gives POSIX OS API access
     - `access()`
 

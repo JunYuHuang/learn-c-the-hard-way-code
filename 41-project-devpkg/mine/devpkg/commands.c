@@ -150,6 +150,8 @@ int Command_build(
 {
     check(p != NULL, "Invalid pool.");
     check(url != NULL, "Invalid url.");
+    check(configure_opts != NULL, "Invalid configure options.");
+    check(make_opts != NULL, "Invalid Make options.");
 
     int rc = 0;
     check(
@@ -199,6 +201,8 @@ int Command_install(
 {
     check(p != NULL, "Invalid pool.");
     check(url != NULL, "Invalid url.");
+    check(configure_opts != NULL, "Invalid configure options.");
+    check(make_opts != NULL, "Invalid Make options.");
 
     int rc = 0;
     check(
