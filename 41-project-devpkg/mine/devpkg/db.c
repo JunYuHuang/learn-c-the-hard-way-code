@@ -80,7 +80,7 @@ error:
     return -1;
 }
 
-// bool function that returns 1 on success or 0 on fail
+// bool function that returns 1 on success or (0 or -1) on fail
 int DB_find(const char *url)
 {
     check(url != NULL, "Invalid url.");

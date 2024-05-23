@@ -1,3 +1,11 @@
+/*
+After you have this entered in and compiling, you can analyze it.
+If you've done the challenges thus far, you should see how the
+`shell.c` functions are being used to run shells, and how the
+arguments are being replaced. If not, then go back and make sure
+you truly understand how `Shell_exec` actually works.
+*/
+
 #include <apr_uri.h>
 #include <apr_fnmatch.h>
 #include <unistd.h>
@@ -10,28 +18,37 @@
 
 int Command_depends(apr_pool_t *p, const char *path)
 {
+    check(p != NULL, "Invalid pool.");
+    check(path != NULL, "Invalid path.");
+
     FILE *in = NULL;
     bstring line = NULL;
 
     in = fopen(path, "r");
     check(in != NULL, "Failed to open downloaded depends: %s", path);
 
+    int rc = -1;
     for (
         line = bgets((bNgetc) fgetc, in, '\n');
         line != NULL;
         line = bgets((bNgetc) fgetc, in, '\n')
     ) {
-        btrimws(line);
+        rc = btrimws(line);
+        check(rc == BSTR_OK, "Failed to trim line.");
         log_info("Processing depends: %s", bdata(line));
-        int rc = Command_install(p, bdata(line), NULL, NULL, NULL);
+
+        rc = Command_install(p, bdata(line), NULL, NULL, NULL);
         check(rc == 0, "Failed to install: %s", bdata(line));
         bdestroy(line);
     }
 
-    fclose(in);
+    rc = fclose(in);
+    check(rc == 0, "Failed to close file '%s'.", path);
+
     return 0;
 
 error:
+    if (p) apr_pool_destroy(p);
     if (line) bdestroy(line);
     if (in) fclose(in);
     return -1;
@@ -39,6 +56,9 @@ error:
 
 int Command_fetch(apr_pool_t *p, const char *url, int fetch_only)
 {
+    check(p != NULL, "Invalid pool.");
+    check(url != NULL, "Invalid url.");
+
     apr_uri_t info = { .port = 0 };
     int rc = 0;
     const char *depends_file = NULL;
@@ -116,6 +136,7 @@ int Command_fetch(apr_pool_t *p, const char *url, int fetch_only)
     // indicates that an install needs to actually run
     return 1;
 error:
+    if (p) apr_pool_destroy(p);
     return -1;
 }
 
@@ -127,10 +148,13 @@ int Command_build(
     const char *install_opts
 )
 {
+    check(p != NULL, "Invalid pool.");
+    check(url != NULL, "Invalid url.");
+
     int rc = 0;
     check(
         access(BUILD_DIR, X_OK | R_OK | W_OK) == 0,
-        "Build directroy doesn't exist: %s",
+        "Build directory doesn't exist: %s",
         BUILD_DIR
     );
 
@@ -161,6 +185,7 @@ int Command_build(
     return 0;
 
 error:
+    if (p) apr_pool_destroy(p);
     return -1;
 }
 
@@ -172,6 +197,9 @@ int Command_install(
     const char *install_opts
 )
 {
+    check(p != NULL, "Invalid pool.");
+    check(url != NULL, "Invalid url.");
+
     int rc = 0;
     check(
         Shell_exec(CLEANUP_SH, NULL) == 0,
@@ -205,6 +233,7 @@ int Command_install(
     return 0;
 
 error:
+    if (p) apr_pool_destroy(p);
     Shell_exec(CLEANUP_SH, NULL);
     return -1;
 }

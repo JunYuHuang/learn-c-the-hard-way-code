@@ -11,13 +11,13 @@
   # Installs a piece of software from a URL.
   devpkg -I <URL>
 
-  # Lists all of the software that's been installed.
+  # Lists all of the software that has been installed.
   devpkg -L
 
   # Fetches some source code for manual building.
   devpkg -F
 
-  # Builds the source code and installs it, even if it's
+  # Builds the source code and installs it, even if it is
   # already installed.
   devpkg -B
   ```
@@ -63,6 +63,8 @@
 - [ ] Do Ubuntu-specific configs
   - [x] Add `-D_LARGEFILE64_SOURCE=1` to `CFLAGS` in the `Makefile`
   - [x] Copy `/usr/local/apr/lib` to `/etc/ld.config.so.d/` ??
+  - [ ] Copy `/usr/local/apr-util/lib` to `/etc/ld.config.so.d/` ??
+  - [ ] Create file `/etc/ld.config.so.d/apr.conf` that has path `/usr/local/apr/lib` in it ??
   - [x] Run `ldconfig` so it picks up the libraries ??
   - [ ] Verify config worked
 - [x] Create and type-copy `./devpkg/db.h`
@@ -175,6 +177,37 @@
   - `...`: a variadic length string array of elements in the order `[key0, arg0, ..., keyN, argN]`
   - allows passing in optional key-value string pairs in `...` to customize the calling arguments `args` in the `template` `Shell` struct
   - custom values in `...` replace the default values in `template`
+
+### Notes For Challenge 3: Critique My Design
+
+- tasks
+  - [ ] code review both `commands.h` and `commands.c`
+  - [ ] add improvement notes to `./notes.txt`
+- code review checklist
+  - [x] `commands.h`
+  - [ ] `commands.c`
+    - [x] `Command_depends()`
+    - [ ] `Command_fetch()`
+    - [ ] `Command_build()`
+    - [ ] `Command_install()`
+- code review notes
+  - from `/apr` lib
+    - `apr_thread_proc.h`
+      - `apr_procattr_t`: a struct typedef
+      - `apr_proc_t`: a struct typedef
+      - `apr_exit_why_e`: an enum
+      - `apr_procattr_create()`
+    - `apr_pools.h`
+      - `apr_pool_t`: a struct typedef
+    - `apr_errno.h`
+      - `apr_status_t`: an int typedef
+      - `APR_SUCCESS`: a macro var set to 0
+      - `APR_NO_PIPE`: a macro var set to 0
+  - from `/apr-util` lib
+    - `apr_uri.h`
+    - `apr_fnmatch.h`
+  - `unistd.h`: a C header that gives POSIX OS API access
+    - `access()`
 
 ## Notes
 

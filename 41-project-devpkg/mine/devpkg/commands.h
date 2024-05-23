@@ -1,3 +1,16 @@
+/*
+Now you get to make the actual commands that do the work. These
+commands will use functions from APR, `db.h`, and `shell.h` to do
+the real work of downloading and building the software that you want
+it to build. This is the most complex set of files, so do them
+carefully. As before, you start by making the `commands.h` file,
+then implementing its functions in the `commands.c` file.
+
+There's not much in `commands.h` that you haven't seen already. You
+should see that there are some defines for strings that are used
+everywhere. The really interesting code is in `commands.c`.
+*/
+
 #ifndef _commands_h
 #define _commands_h
 
