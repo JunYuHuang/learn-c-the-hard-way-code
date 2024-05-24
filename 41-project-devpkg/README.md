@@ -238,6 +238,57 @@
   - `unistd.h`: a C header that gives POSIX OS API access
     - `access()`
 
+### Notes For Challenge 4: The README and Test Files
+
+- formal code review process / steps
+  1. start at a changed code part's entry point
+  2. verify each function's calling params are right
+  3. enter & verify each function's body code is right (line-by-line)
+  4. repeat up to step 2 for each function
+  5. confirm return values and their usage when exiting functions
+  6. confirm any missed calls to changed functions
+- code review key points
+  - check pointer derefs & defend against `NULL`
+  - check `if-statements` and `while-loops` for exiting
+  - check if return values will be valid
+  - check if allocated memory and other resources are freed
+  - confirm all system call params are right via `man` pages
+- tasks
+  - [ ] code review `devpkg.c`
+  - [ ] add docs and instructions to `./README`
+  - [ ] write command tests for `./devpkg` in `./test.sh`
+- code review checklist
+  - [ ] `main()`
+    - up to line 49 in `./mine/`
+- code review notes
+  - from `/apr` lib
+    - `apr_general.h`
+      - includes
+        - `apr.h`
+        - `apr_pools.h`
+        - `apr_errno.h`
+    - `apr_getopt.h`
+      - includes
+        - `apr_pools.h`
+      - `apr_getopt_t`: a struct typedef
+      - `apr_getopt_init()`
+    - `apr_strings.h`
+      - includes
+        - `apr.h`
+        - `apr_pools.h`
+        - `apr_errno.h`
+        - `apr_want.h`
+    - `apr_lib.h`
+      - includes
+        - `apr.h`
+        - `apr_errno.h`
+    - `apr_pools.h`
+      - `apr_pool_t`: a struct typedef
+      - `apr_pool_initialize()`
+      - `apr_pool_create()`
+  - from `/apr-util` lib
+    - todo
+
 ## Notes
 
 - video notes

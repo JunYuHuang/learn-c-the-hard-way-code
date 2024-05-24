@@ -1,3 +1,24 @@
+/*
+The last and most important file, but probably the simplest, is
+`devpkg.c` which is where the `main` function lives. There's no `.h`
+file for this, since it includes all of the others. Instead, this
+just creates the executable `devpkg` when combined with the other
+`.o` files from our `Makefile`. Enter in the code for this file, and
+make sure it's correct.
+
+...
+
+The challenge for this file is to understand how the arguments are
+being processed, what the arguments are, and then create the
+`README` file with instructions on how to use them. As you write the
+`README`, also write a simple `test.sh` that runs `./devpkg` to
+check that each command is actually working against real, live code.
+Use the `set -e` at the top of your script so that it aborts on the
+first error.
+
+Finally, run the program under your debugger and make sure it's working before moving on to the final challenge.
+*/
+
 #include <stdio.h>
 #include <apr_general.h>
 #include <apr_getopt.h>
@@ -107,5 +128,6 @@ int main(int argc, const char *argv[])
     return 0;
 
 error:
+    if (p) apr_pool_destroy(p);
     return 1;
 }
