@@ -1,5 +1,185 @@
 # `devpkg` README
 
+`devpkg` is a toy CLI tool for installing software packages from a URL under the `/tmp/` directory.
+
+For this to work, `devpkg` assumes the following:
+
+- `devpkg` will be used on a UNIX or Linux based OS.
+- The package URL contains the source code compressed as a `.tar.gz` or `.tar.bz2` file.
+- The package supports the following shell commands:
+  - `./configure`
+  - `make`
+  - `make install`
+
+## Table Of Contents
+
+- [Prerequisites](#prerequisites)
+- [How To Install (From Source Code)](#how-to-install-from-source-code)
+- [How To Use](#how-to-use)
+- [Appendix A: Set Up Prereqs](#appendix-a-set-up-prereqs)
+- [Appendix B: Test `devpkg`](#appendix-b-test-devpkg)
+
+## Prerequisites
+
+`devpkg` assumes the following before installation:
+
+- Apache Portable Runtime (`apr`) 1.5.2 is installed
+- Apache Portable Runtime Utility Library (`apr-util`) 1.5.4 is installed
+
+The above versions of `apr` and `apr-util` may be installed and configured by following the steps in [Appendix A](#appendix-a-set-up-prereqs).
+
+## How To Install (From Source Code)
+
+```bash
+# Go to the project directory root
+cd devpkg
+
+# Compile the source code
+make
+
+# Install / copy the binary under `/usr/local/bin`
+make install
+
+# Optional: Remove the built binary and object files
+make clean
+```
+
 ## How To Use
 
-- TODO
+`devpkg` supports the following 5 commands:
+
+- [Setup](#how-to-use---setup)
+- [Install](#how-to-use---install)
+- [List](#how-to-use---list)
+- [Fetch](#how-to-use---fetch)
+- [Build](#how-to-use---build)
+
+Note that most if not all commands need superuser privileges i.e. they must be prefixed with `sudo ` before running them.
+
+### How To Use - Setup
+
+Sets up a new installation on a computer.
+Must be done once before using any other commands.
+
+```bash
+devpkg -S
+```
+
+### How To Use - Install
+
+Installs a piece of software from a URL.
+
+```bash
+# Syntax
+devpkg -I <URL>
+
+# Example usage
+devpkg -I https://dlcdn.apache.org/httpd/httpd-2.4.59.tar.gz
+```
+
+### How To Use - List
+
+Lists all software installed using `devpkg`.
+
+```bash
+devpkg -L
+```
+
+### How To Use - Fetch
+
+Downloads source code from a URL for manual building.
+
+```bash
+# Syntax
+devpkg -F <URL>
+
+# Example usage
+devpkg -F https://dlcdn.apache.org/httpd/httpd-2.4.59.tar.gz
+```
+
+### How To Use - Build
+
+Builds the source code and installs it, even if it is already installed.
+
+```bash
+# Syntax
+devpkg -B <URL>
+
+# Example usage
+devpkg -B https://dlcdn.apache.org/httpd/httpd-2.4.59.tar.gz
+```
+
+## Appendix A: Set Up Prereqs
+
+1. [Install `apr` and `apr-util`](#install-apr-and-apr-util)
+2. [Configure `apr` and `apr-util`](#configure-apr-and-apr-util)
+
+### Install `apr` and `apr-util`
+
+Run the following shell script as a superuser to install `apr` and `apr-util`:
+
+```bash
+set -e
+
+# go somewhere safe
+cd /tmp
+
+# get the source to base APR 1.5.2
+curl -L -O http://archive.apache.org/dist/apr/apr-1.5.2.tar.gz
+
+# extract it and go into the source
+tar -xzvf apr-1.5.2.tar.gz
+cd apr-1.5.2
+
+# you need this on OSX Yosemite
+touch libtoolT
+
+# configure, make, make install
+./configure
+make
+sudo make install
+
+# reset and cleanup
+cd /tmp
+rm -rf apr-1.5.2 apr-1.5.2.tar.gz
+
+# do the same with apr-util
+curl -L -O http://archive.apache.org/dist/apr/apr-util-1.5.4.tar.gz
+
+# extract
+tar -xzvf apr-util-1.5.4.tar.gz
+cd apr-util-1.5.4
+
+# you need this on OSX Yosemite
+touch libtoolT
+
+# configure, make, make install
+./configure --with-apr=/usr/local/apr
+# you need that extra parameter to configure because
+# apr-util can't really find it because...who knows.
+
+make
+sudo make install
+
+# cleanup
+cd /tmp
+rm -rf apr-util-1.5.4* apr-1.5.2*
+```
+
+### Configure `apr` and `apr-util`
+
+Note that the following steps need superuser privileges.
+
+1. Under `/etc/ld.conf.so.d`, create the file `apr.conf` with the following content:
+
+```
+/usr/local/apr/lib
+```
+
+2. Run `sudo ldconfig`.
+
+## Appendix B: Test `devpkg`
+
+This test script assumes `devpkg`'s [How To Install (From Source Code)](#how-to-install-from-source-code) have been followed.
+
+Run `sudo sh test.sh` to test all of `devpkg`'s commands.

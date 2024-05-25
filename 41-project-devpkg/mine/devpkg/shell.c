@@ -39,7 +39,6 @@ int Shell_exec(Shell template, ...)
         key = va_arg(argp, const char *)
     ) {
         arg = va_arg(argp, const char *);
-        check(arg != NULL, "Arg cannot be null.");
 
         for (i = 0; template.args[i] != NULL; i++) {
             if (strcmp(template.args[i], key) == 0) {

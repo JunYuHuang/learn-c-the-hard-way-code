@@ -32,11 +32,14 @@ Finally, run the program under your debugger and make sure it's working before m
 int main(int argc, const char *argv[])
 {
     apr_pool_t *p = NULL;
-    apr_pool_initialize();
-    apr_pool_create(&p, NULL);
+    apr_status_t rv;
+    rv = apr_pool_initialize();
+    check(rv == APR_SUCCESS, "Failed to initialize pool.");
+
+    rv = apr_pool_create(&p, NULL);
+    check(rv == APR_SUCCESS, "Failed to create pool.")
 
     apr_getopt_t *opt;
-    apr_status_t rv;
 
     char ch = '\0';
     const char *optarg = NULL;
@@ -47,6 +50,10 @@ int main(int argc, const char *argv[])
     enum CommandType request = COMMAND_NONE;
 
     rv = apr_getopt_init(&opt, p, argc, argv);
+    check(
+        rv == APR_SUCCESS,
+        "Failed to initialize arguments for parsing."
+    );
 
     while (
         apr_getopt(

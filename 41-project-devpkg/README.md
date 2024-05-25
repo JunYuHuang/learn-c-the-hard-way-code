@@ -1,5 +1,15 @@
 # Exercise 41: Project devpkg
 
+## Notes
+
+- APR: an API library that handles common system calls across different OSs
+  - look at the docs
+- code review
+  - recommended review order:
+    1. `devpkg.c`: the main file
+    2. `shell.c`
+    3. doesn't matter after this
+
 ## MVP Notes
 
 - CLI tool with 5 commands
@@ -40,12 +50,6 @@
   - `commands.o`
   - `devpkg`
 
-## Spec Tests
-
-```bash
-# TODO
-```
-
 ## TODOs
 
 - [x] Create and write `./ex41.1.sh` file
@@ -60,13 +64,11 @@
   - [x] Copy `bstrlib.c` to `./devpkg/bstrlib.c`
   - [x] Run `make bstrlib.o` to create the `bstrlib.o` file
 - [x] Type-copy `./devpkg/Makefile`
-- [ ] Do Ubuntu-specific configs
+- [x] Do Ubuntu-specific configs
   - [x] Add `-D_LARGEFILE64_SOURCE=1` to `CFLAGS` in the `Makefile`
-  - [x] Copy `/usr/local/apr/lib` to `/etc/ld.config.so.d/` ??
-  - [ ] Copy `/usr/local/apr-util/lib` to `/etc/ld.config.so.d/` ??
-  - [ ] Create file `/etc/ld.config.so.d/apr.conf` that has path `/usr/local/apr/lib` in it ??
-  - [x] Run `ldconfig` so it picks up the libraries ??
-  - [ ] Verify config worked
+  - [x] Create file `/etc/ld.config.so.d/apr.conf` whose content has the path `/usr/local/apr/lib` in it
+  - [x] Run `sudo ldconfig` so it picks up the libraries
+  - [x] Verify config worked by checking if running `make` builds and links binary and its dependent libraries
 - [x] Create and type-copy `./devpkg/db.h`
 - [x] Create and type-copy `./devpkg/db.c`
 - [x] Create and type-copy `./devpkg/shell.h`
@@ -74,14 +76,13 @@
 - [x] Create and type-copy `./devpkg/commands.h`
 - [x] Create and type-copy `./devpkg/commands.c`
 - [x] Create and type-copy `./devpkg/devpkg.c`
-- [ ] Run `make` in `./devpkg`
 
 ## Challenges
 
 - [x] Challenge 1: Code Review
 - [x] Challenge 2: Analyze Shell_exec
 - [x] Challenge 3: Critique My Design
-- [ ] Challenge 4: The README and Test Files
+- [x] Challenge 4: The README and Test Files
 - [ ] ~~Challenge 5: The Final Challenge~~ (skipped)
 
 ## Notes For Challenges
@@ -254,12 +255,11 @@
   - check if allocated memory and other resources are freed
   - confirm all system call params are right via `man` pages
 - tasks
-  - [ ] code review `devpkg.c`
-  - [ ] add docs and instructions to `./README`
-  - [ ] write command tests for `./devpkg` in `./test.sh`
+  - [x] code review `devpkg.c`
+  - [x] add docs and instructions to `./README`
+  - [x] write and test the `devpkg`'s command tests in `test.sh`
 - code review checklist
-  - [ ] `main()`
-    - up to line 49 in `./mine/`
+  - [x] `main()`
 - code review notes
   - from `/apr` lib
     - `apr_general.h`
@@ -288,10 +288,5 @@
       - `apr_pool_create()`
   - from `/apr-util` lib
     - todo
-
-## Notes
-
-- video notes
-  - TODO
-- misc
-  - todo
+- doc and instructions notes
+  - ran `make install` in `./modded/devpkg`
