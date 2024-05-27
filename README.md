@@ -51,7 +51,7 @@ An exercise is complete when:
 - [x] Exercise 39: String Algorithms
 - [x] Exercise 40: Binary Search Trees
 - [x] Exercise 41: Project `devpkg`
-- [ ] Exercise 42: Stacks and Queues
+- [x] Exercise 42: Stacks and Queues
 - [ ] Exercise 43: A Simple Statistics Engine
 - [ ] Exercise 44: Ring Buffer
 - [ ] Exercise 45: A simple TCP/IP Client
