@@ -11,11 +11,13 @@
   2. mean of standard deviations: stats += a std. dev. sample
 - misc
   - neither `stats.h` nor `stats.c` has a function for freeing the allocated memory created with either `Stats_recreate()` or `Stats_create()`
+  - `stats.c` is a rolling calculation
+  - `static inline` functions are like function-like macros with certain limits
 - todos
   - [x] type-copy all this exercise's source code to `./modded`
   - [x] add code comments to `./modded`
   - [x] read text and add notes here
-  - [ ] watch video and add notes here
+  - [x] watch video and add notes here
 
 ## Extra Credit
 

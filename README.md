@@ -52,7 +52,7 @@ An exercise is complete when:
 - [x] Exercise 40: Binary Search Trees
 - [x] Exercise 41: Project `devpkg`
 - [x] Exercise 42: Stacks and Queues
-- [ ] Exercise 43: A Simple Statistics Engine
+- [x] Exercise 43: A Simple Statistics Engine
 - [ ] Exercise 44: Ring Buffer
 - [ ] Exercise 45: A simple TCP/IP Client
 - [ ] Exercise 46: Ternary Search Tree
