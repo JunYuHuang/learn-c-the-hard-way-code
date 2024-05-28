@@ -3,12 +3,32 @@
 ## Notes
 
 - ring buffer
-  - a queue variant
+  - i.e. a fixed-sized circular array; used like an infinite array
+  - how to make it
+    - queue variant of bstrings OR
+    - dynamic array with dynamic start and end settings
+  - why?
+    - fast adds + removes when the amount added and removed is random
+  - uses
+    - most I/O processing in C
+    - get or send an unknown amount of data from 2 unlike ends
+  - basic ops:
+    - enqueue / write: push el to its end
+    - dequeue / read: pop first el
+    - full
+    - empty
+- misc
+  - buffer: store of temp data that will be processed or copied elsewhere
+    - realized as a fixed or dynamic sized array
+  - 10 min video (timestamp @ 6:10 / 10:02)
+  - first impression code review
+    - like surface level code review
+    - flag / comment areas in the code that may have bugs
 - todos
   - [x] type-copy the source code into `./mine`
   - [x] add code comments to `./mine`
-  - [ ] write my own `ringbuffer_tests.c`
-  - [ ] read text and add notes here
+  - [x] write my own `ringbuffer_tests.c`
+  - [x] read text and add notes here
   - [ ] watch video and add notes here
 
 ## Extra Credit

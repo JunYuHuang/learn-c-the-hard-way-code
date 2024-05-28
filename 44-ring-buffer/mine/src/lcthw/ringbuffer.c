@@ -9,7 +9,7 @@ Since my `RingBuffer` deals with reading and writing blocks of
 memory, I'm making sure that any time `end == start`, I reset them
 to 0 (zero) so that they go to the beginning of the buffer. In the
 Wikipedia version it isn't writing blocks of data, so it only has to
-move end and `start` around in a circle. To better handle blocks,
+move `end` and `start` around in a circle. To better handle blocks,
 you have to drop to the beginning of the internal buffer whenever
 the data is empty.
 */
@@ -25,9 +25,11 @@ the data is empty.
 RingBuffer *RingBuffer_create(int length)
 {
     RingBuffer *buffer = calloc(1, sizeof(RingBuffer));
+    // BUG: check this
     buffer->length = length + 1;
     buffer->start = 0;
     buffer->end = 0;
+    // BUG: calloc!
     buffer->buffer = calloc(buffer->length, 1);
 
     return buffer;
@@ -44,6 +46,7 @@ void RingBuffer_destroy(RingBuffer *buffer)
 int RingBuffer_write(RingBuffer *buffer, char *data, int length)
 {
     if (RingBuffer_available_data(buffer) == 0) {
+        // obo
         buffer->start = buffer->end = 0;
     }
 
@@ -53,9 +56,11 @@ int RingBuffer_write(RingBuffer *buffer, char *data, int length)
         RingBuffer_available_data(buffer), length
     );
 
+    // arguments
     void *result = memcpy(RingBuffer_ends_at(buffer), data, length);
     check(result != NULL, "Failed to write data into buffer.");
 
+    // is this the right place to do this?
     RingBuffer_commit_write(buffer, length);
 
     return length;
@@ -71,6 +76,7 @@ int RingBuffer_read(RingBuffer *buffer, char *target, int amount)
         RingBuffer_available_data(buffer), amount
     );
 
+    // BUG: is that the right arguments
     void *result = memcpy(
         target, RingBuffer_starts_at(buffer), amount
     );
