@@ -53,7 +53,7 @@ An exercise is complete when:
 - [x] Exercise 41: Project `devpkg`
 - [x] Exercise 42: Stacks and Queues
 - [x] Exercise 43: A Simple Statistics Engine
-- [ ] Exercise 44: Ring Buffer
+- [x] Exercise 44: Ring Buffer
 - [ ] Exercise 45: A simple TCP/IP Client
 - [ ] Exercise 46: Ternary Search Tree
 - [ ] Exercise 47: A Fast URL Router

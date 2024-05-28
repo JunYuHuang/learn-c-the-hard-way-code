@@ -20,7 +20,6 @@
 - misc
   - buffer: store of temp data that will be processed or copied elsewhere
     - realized as a fixed or dynamic sized array
-  - 10 min video (timestamp @ 6:10 / 10:02)
   - first impression code review
     - like surface level code review
     - flag / comment areas in the code that may have bugs
@@ -29,7 +28,7 @@
   - [x] add code comments to `./mine`
   - [x] write my own `ringbuffer_tests.c`
   - [x] read text and add notes here
-  - [ ] watch video and add notes here
+  - [x] watch video and add notes here
 
 ## Extra Credit
 
