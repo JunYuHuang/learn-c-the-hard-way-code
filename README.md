@@ -55,7 +55,7 @@ An exercise is complete when:
 - [x] Exercise 43: A Simple Statistics Engine
 - [x] Exercise 44: Ring Buffer
 - [x] Exercise 45: A simple TCP/IP Client
-- [ ] Exercise 46: Ternary Search Tree
+- [x] Exercise 46: Ternary Search Tree
 - [ ] Exercise 47: A Fast URL Router
 - [ ] Exercise 48: A Simple Network Server
 - [ ] Exercise 49: A Statistics Server
