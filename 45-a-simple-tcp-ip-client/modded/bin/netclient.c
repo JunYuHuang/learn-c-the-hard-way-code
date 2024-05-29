@@ -49,7 +49,7 @@ int client_connect(char *host, char *port)
     return sock;
 
 error:
-    freeaddrinfo(addr);
+    if (addr) freeaddrinfo(addr);
     return -1;
 }
 
@@ -58,6 +58,7 @@ int read_some(RingBuffer *buffer, int fd, int is_socket)
     int rc = 0;
 
     if (RingBuffer_available_data(buffer) == 0) {
+        // BUG: why is this not part of ringbuffer?
         buffer->start = buffer->end = 0;
     }
 
@@ -103,6 +104,8 @@ int write_some(RingBuffer *buffer, int fd, int is_socket)
         rc = write(fd, bdata(data), blength(data));
     }
 
+    // BUG: put unread amount back in the right buffer
+    // TODO: don't use bstrings, just use the buffer directly
     check(
         rc == blength(data),
         "Failed to write everything to fd: %d.",
@@ -140,7 +143,6 @@ int main(int argc, char *argv[])
     RingBuffer *sock_rb = RingBuffer_create(1024 * 10);
 
     check(argc == 3, "USAGE: netclient host port");
-
     socket = client_connect(argv[1], argv[2]);
     check(socket >= 0, "connect to %s:%s failed.", argv[1], argv[2]);
 
