@@ -1,6 +1,5 @@
-/ MainApp
-/hello Hello
-/hello/ Hello
-/signup Signup
-/logout Logout
-/album/ Album
+/test.tst TestHandler
+/ IndexHandler
+/test/this/out/index.html PageHandler
+/index.html PageHandler
+/and/then/i/have/things/to/test.html PageHandler

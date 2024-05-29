@@ -24,6 +24,7 @@ to prefixes, or do both and pick the best one.
 TSTree *add_route_data(TSTree *routes, bstring line)
 {
     struct bstrList *data = bsplit(line, ' ');
+    check(data != NULL, "Bad data from bsplit.");
     check(
         data->qty == 2,
         "Line '%s' does not have 2 columns",
@@ -42,6 +43,7 @@ TSTree *add_route_data(TSTree *routes, bstring line)
     return routes;
 
 error:
+    if (data) bstrListDestroy(data);
     return NULL;
 }
 
@@ -65,6 +67,7 @@ TSTree *load_routes(const char *file)
         routes = add_route_data(routes, line);
         check(routes != NULL, "Failed to add route.");
         bdestroy(line);
+        line = NULL;    // for error cleanup
     }
 
     fclose(routes_map);
@@ -77,11 +80,14 @@ error:
     return NULL;
 }
 
-bstring match_url(TSTree *routes, bstring url)
+bstring match_url(TSTree *routes, bstring url, int *out_prefix)
 {
     bstring route = TSTree_search(routes, bdata(url), blength(url));
 
-    if (route == NULL) {
+    if (route) {
+        *out_prefix = 0;
+    } else {
+        *out_prefix = 1;
         printf("No exact match found, trying prefix.\n");
         route = TSTree_search_prefix(
             routes, bdata(url), blength(url)
@@ -103,6 +109,7 @@ bstring read_line(const char *prompt)
     return result;
 
 error:
+    if (result) bdestroy(result);
     return NULL;
 }
 
@@ -123,20 +130,34 @@ int main(int argc, char *argv[])
     bstring url = NULL;
     bstring route = NULL;
     TSTree *routes = NULL;
+    int prefix = 0;
 
     check(argc == 2, "USAGE: urlor <urlfile>");
 
     routes = load_routes(argv[1]);
     check(routes != NULL, "Your route file has an error.");
 
+    // BUG: only ctrl-c to get out of this?
     while (1) {
         url = read_line("URL> ");
         check_debug(url != NULL, "goodbye.");
 
-        route = match_url(routes, url);
+        route = match_url(routes, url, &prefix);
 
         if (route) {
-            printf("MATCH: %s == %s\n", bdata(url), bdata(route));
+            if (prefix) {
+                printf(
+                    "PREFIX MATCH: %s == %s\n",
+                    bdata(url),
+                    bdata(route)
+                );
+            } else {
+                printf(
+                    "EXACT MATCH: %s == %s\n",
+                    bdata(url),
+                    bdata(route)
+                );
+            }
         } else {
             printf("FAIL: %s\n", bdata(url));
         }
@@ -148,6 +169,6 @@ int main(int argc, char *argv[])
     return 0;
 
 error:
-    destroy_routes(routes);
+    if (routes) destroy_routes(routes);
     return 1;
 }
