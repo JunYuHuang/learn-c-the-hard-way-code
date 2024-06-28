@@ -22,6 +22,14 @@
     - `socket()`
     - `shutdown()`
     - `fork()`
+- notes on Zed's solution
+  - installs the `liblcthw` library with `make install`
+  - mods a copy of `c-skeleton`
+  - edits the `Makefile`
+  - splits up code so that
+    - `net.c` has functions that do most of the work
+    - `statserve.c` just uses the functions in `net.c`
+  - uses `fork()` to create a new process for each new socket file descriptor created by `accept()`
 - misc
   - can steal code from `netclient` project in ex47
   - `sys/select.h`: a POSIX standard C lib that does sync. I/O multiplexing
@@ -48,7 +56,7 @@
     - `getaddrinfo()`: makes 1+ `addrinfo` structs
     - `freeaddrinfo()`: destroys `addrinfo`'s made by `getaddrinfo()`
   - `unistd.h`: standard symbolic constants and types
-    - `fork()`: creates a child process
+    - `fork()`: clones the calling process to make a new process
     - `close()`: close a file descriptor
   - `fcntl.h`: a POSIX standard C lib?
     - `fcntl()`: update a file descriptor
@@ -56,7 +64,9 @@
     - e.g. `O_NONBLOCK` flag in `fcntl()` call inside `nonblock()`
 - todos
   - [x] watch ex48a video
-  - [ ] watch ex48b video
+  - [ ] watch ex48b video (timestamp @ 10:03)
+  - [ ] fix build issues when running `make` in `/original`
+    - C linker is not picking up the installed library `liblcthw.a` in `/usr/local/lib/`
 
 ## `statserve` Specs
 
@@ -97,8 +107,9 @@ dump /zed
 ## My Todos
 
 - [x] create a socket
-- [x] bind the socket to IP address `127.0.0.1` and port `7899`
+- [x] config the server's IP address and port via CLI args
 - [x] listen to connections on the socket
 - [x] accept connections on the socket
-- [x] echo back whatever the client types??
+- [x] echo back whatever the client types
 - [x] properly shut down server when client sends string message `!quit`
+- [ ] make the server create copies of itself with `fork()` to serve multiple clients
