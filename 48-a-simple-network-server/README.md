@@ -112,4 +112,4 @@ dump /zed
 - [x] accept connections on the socket
 - [x] echo back whatever the client types
 - [x] properly shut down server when client sends string message `!quit`
-- [ ] make the server create copies of itself with `fork()` to serve multiple clients
+- [x] make the server create copies of itself with `fork()` to serve multiple clients
