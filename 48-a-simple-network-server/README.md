@@ -67,7 +67,7 @@
   - [x] watch ex48b video
   - [x] fix build issues when running `make` in `/original`
     - C linker is not picking up the installed library `liblcthw.a` in `/usr/local/lib/`
-  - [ ] type-copy the code in `/original` to a new folder `/modded` with comments and test it
+  - [x] type-copy the code in `/original` to a new folder `/modded` with comments and test it
 
 ## `statserve` Specs
 
