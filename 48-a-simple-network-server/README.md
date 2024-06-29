@@ -64,9 +64,10 @@
     - e.g. `O_NONBLOCK` flag in `fcntl()` call inside `nonblock()`
 - todos
   - [x] watch ex48a video
-  - [ ] watch ex48b video (timestamp @ 10:03)
-  - [ ] fix build issues when running `make` in `/original`
+  - [x] watch ex48b video
+  - [x] fix build issues when running `make` in `/original`
     - C linker is not picking up the installed library `liblcthw.a` in `/usr/local/lib/`
+  - [ ] type-copy the code in `/original` to a new folder `/modded` with comments and test it
 
 ## `statserve` Specs
 
